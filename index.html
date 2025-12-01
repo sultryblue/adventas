@@ -11,17 +11,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-  html, body {
-    margin: 0;
-    padding: 0;
-  }
-
   body {
     font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background: linear-gradient(#0b2e13, #145c1f);
     text-align: center;
-    padding: 2px 10px 40px 10px; /* mažas tarpas viršuje */
+    padding: 2px 10px 40px 10px; /* mažesnis tarpas viršuje */
     color: #fff;
+    margin: 0;
   }
 
   /* --- FOTO + PROGRESO JUOSTOS BLOKAS --- */
@@ -30,12 +26,12 @@
     margin: 0 auto 40px auto;
   }
 
-  /* Nuotrauka viršuje, be rėmelių, susilieja su juosta */
+  /* Didelė nuotrauka viršuje, be rėmelių, susilieja su juosta */
   .top-photo {
     width: 45%;            /* galima keisti 40–55 pagal skonį */
     display: block;
     margin: 0 auto;
-    margin-bottom: 0;      /* priglaudžia nuotrauką prie juostos */
+    margin-bottom: 0px;   /* priglaudžia nuotrauką prie juostos */
     border: none;
     border-radius: 0;
     box-shadow: none;
@@ -43,7 +39,7 @@
 
   .progress-bg {
     position: relative;
-    margin-top: 0;         /* kad juosta nelįstų ant nuotraukos */
+    margin-top: 0px;      /* kad juosta nelįstų ant nuotraukos */
   }
 
   .progress-bar {
@@ -144,7 +140,7 @@
 
     .top-photo {
       width: 70%;
-      margin-bottom: 0;
+      margin-bottom: 0px;
     }
 
     .progress-bar {
@@ -202,7 +198,7 @@
 <!-- FOTO + PROGRESS BAR -->
 <div class="progress-wrapper">
 
-  <!-- Tavo nuotrauka -->
+  <!-- Nuotrauka viršuje -->
   <img src="https://raw.githubusercontent.com/sultryblue/adventas/main/foton.PNG"
        class="top-photo" alt="Viršutinė nuotrauka">
 
@@ -225,15 +221,13 @@
 // ---------- ADVENTO ŽINUTĖS ----------
 const messages = {
   1: {
-    text: "✨ Gruodžio 1! Prasideda mūsų GIS advento kelionė!"
-    // image: "https://raw.githubusercontent.com/sultryblue/adventas/main/diena1.jpg"
+    text: "✨ Gruodžio 1! Prasideda mūsų GIS advento kelionė!",
   },
   2: {
-    text: "❄️ Gruodžio 2! Šiandien pasileisk kokią kalėdinę dainą dirbdama(s)."
-    // image: "https://raw.githubusercontent.com/sultryblue/adventas/main/diena2.jpg"
+    text: "❄️ Gruodžio 2! Šiandien pasileisk kokią kalėdinę dainą dirbdama(s).",
   },
   3: {
-    text: "🎶 Gruodžio 3! Maža pertraukėlė su šia daina? 🙂"
+    text: "🎶 Gruodžio 3! Maža pertraukėlė su šia daina? 🙂",
   }
   // ... tęsk iki 24 dienos ...
 };
@@ -271,7 +265,7 @@ if (today < adventStart) {
 
 document.getElementById("progressFill").style.width = progressPercent + "%";
 
-// Tekstas „X diena iš 24“
+// Tekstas „Diena X iš 24“
 let progressLabel =
   (currentMonth === 12 && currentDay >= 1 && currentDay <= 24)
     ? `${currentDay} diena iš 24`
@@ -289,11 +283,9 @@ document.getElementById("progressText").textContent =
 // ---------- RODYTI ŠIANDIENOS ŽINUTĘ ----------
 function buildContent(data) {
   let html = "";
-
   if (data.text) {
     html += `<p class="advent-text">${data.text}</p>`;
   }
-
   if (data.image) {
     html += `<img class="advent-image" src="${data.image}" alt="Advento paveikslėlis">`;
   }
@@ -301,331 +293,7 @@ function buildContent(data) {
   // Tas pats YouTube video visoms dienoms
   html += `
     <iframe
-      src="<!DOCTYPE html>
-<html lang="lt">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advento kalendorius</title>
-
-<!-- Poppins šriftas su LT palaikymu -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: linear-gradient(#0b2e13, #145c1f);
-    text-align: center;
-    padding: 2px 10px 40px 10px; /* mažas tarpas viršuje */
-    color: #fff;
-  }
-
-  /* --- FOTO + PROGRESO JUOSTOS BLOKAS --- */
-  .progress-wrapper {
-    max-width: 700px;
-    margin: 0 auto 40px auto;
-  }
-
-  /* Nuotrauka viršuje, be rėmelių, susilieja su juosta */
-  .top-photo {
-    width: 45%;            /* galima keisti 40–55 pagal skonį */
-    display: block;
-    margin: 0 auto;
-    margin-bottom: 0;      /* priglaudžia nuotrauką prie juostos */
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .progress-bg {
-    position: relative;
-    margin-top: 0;         /* kad juosta nelįstų ant nuotraukos */
-  }
-
-  .progress-bar {
-    position: relative;
-    margin: 0 auto;
-    width: 80%;
-    height: 30px;
-    border-radius: 15px;
-    background: rgba(0, 0, 0, 0.6);
-    overflow: hidden;
-    border: 2px solid #b30000;
-  }
-
-  .progress-fill {
-    height: 100%;
-    width: 0%;
-    border-radius: 15px;
-
-    /* Candy cane efektas */
-    background: repeating-linear-gradient(
-      45deg,
-      #b30000 0px,
-      #b30000 12px,
-      #ffffff 12px,
-      #ffffff 24px
-    );
-    background-size: 40px 40px;
-    animation: candyMove 1s linear infinite;
-    transition: width 0.8s ease-out;
-  }
-
-  @keyframes candyMove {
-    from { background-position: 0 0; }
-    to   { background-position: 40px 0; }
-  }
-
-  .progress-text {
-    margin-top: 20px;
-    font-weight: 700;
-    color: #ffdf80;
-    text-shadow: 1px 1px 3px black;
-    font-size: 1.2rem;
-  }
-
-  /* --- PAGRINDINĖ ADVENTO DĖŽUTĖ --- */
-  .box {
-    background: #ffffff;
-    color: #000;
-    padding: 25px;
-    border-radius: 14px;
-    max-width: 600px;
-    margin: 0 auto;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-    border: 3px solid #b30000;
-  }
-
-  .box h1 {
-    color: #b30000;
-    text-shadow: 1px 1px 2px #000;
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.6rem;
-  }
-
-  /* Advento žinutės — BOLD, raudonos, su švytėjimu */
-  .advent-text {
-    font-weight: 700;
-    color: #b30000;
-    font-size: 1.15rem;
-    text-shadow: 0 0 4px #ffdf80;
-    margin-bottom: 10px;
-  }
-
-  img.advent-image {
-    max-width: 100%;
-    border-radius: 10px;
-    margin-top: 10px;
-    border: 3px solid #0b2e13;
-  }
-
-  iframe {
-    margin-top: 15px;
-    width: 100%;
-    max-width: 420px;
-    height: 240px;
-    border: 3px solid #b30000;
-    border-radius: 6px;
-  }
-
-  /* --- RESPONSYVUS DIZAINAS --- */
-
-  /* Telefonams ir smulkiems ekranams */
-  @media (max-width: 600px) {
-
-    body {
-      padding: 5px 5px 30px 5px;
-    }
-
-    .top-photo {
-      width: 70%;
-      margin-bottom: 0;
-    }
-
-    .progress-bar {
-      width: 90%;
-      height: 26px;
-    }
-
-    .progress-text {
-      font-size: 1rem;
-      margin-top: 15px;
-    }
-
-    .box {
-      padding: 18px;
-      margin-top: 15px;
-    }
-
-    .box h1 {
-      font-size: 1.3rem;
-    }
-
-    .advent-text {
-      font-size: 1rem;
-    }
-
-    iframe {
-      max-width: 100%;
-      height: 200px;
-    }
-  }
-
-  /* Labai maži ekranai (320–400px) */
-  @media (max-width: 400px) {
-
-    .top-photo {
-      width: 80%;
-    }
-
-    .progress-bar {
-      height: 22px;
-    }
-
-    .progress-text {
-      font-size: 0.95rem;
-    }
-
-    .advent-text {
-      font-size: 0.95rem;
-    }
-  }
-</style>
-</head>
-<body>
-
-<!-- FOTO + PROGRESS BAR -->
-<div class="progress-wrapper">
-
-  <!-- Tavo nuotrauka -->
-  <img src="https://raw.githubusercontent.com/sultryblue/adventas/main/foton.PNG"
-       class="top-photo" alt="Viršutinė nuotrauka">
-
-  <div class="progress-bg">
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-  </div>
-
-  <div class="progress-text" id="progressText"></div>
-</div>
-
-<!-- ADVENTO ŽINUČIŲ DĖŽUTĖ -->
-<div class="box">
-  <h1>🎄 GIS advento kalendorius 🎄</h1>
-  <div id="content">Kraunama...</div>
-</div>
-
-<script>
-// ---------- ADVENTO ŽINUTĖS ----------
-const messages = {
-  1: {
-    text: "✨ Gruodžio 1! Prasideda mūsų GIS advento kelionė!"
-    // image: "https://raw.githubusercontent.com/sultryblue/adventas/main/diena1.jpg"
-  },
-  2: {
-    text: "❄️ Gruodžio 2! Šiandien pasileisk kokią kalėdinę dainą dirbdama(s)."
-    // image: "https://raw.githubusercontent.com/sultryblue/adventas/main/diena2.jpg"
-  },
-  3: {
-    text: "🎶 Gruodžio 3! Maža pertraukėlė su šia daina? 🙂"
-  }
-  // ... tęsk iki 24 dienos ...
-};
-
-// ---------- DATA + PROGRESAS ----------
-const today = new Date();
-const year = today.getFullYear();
-
-const adventStart = new Date(year, 11, 1);   // gruodžio 1
-const adventEnd   = new Date(year, 11, 24);  // gruodžio 24
-
-// Kalėdos: jei nori 25 d., pakeisk 24 į 25
-const christmasDate = new Date(year, 11, 24);
-
-const currentDay = today.getDate();
-const currentMonth = today.getMonth() + 1;
-
-function stripTime(d) {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-}
-function daysBetween(d1, d2) {
-  const oneDayMs = 24 * 60 * 60 * 1000;
-  return Math.round((stripTime(d2) - stripTime(d1)) / oneDayMs);
-}
-
-// Progreso procentai: 1 d. ~4%, 24 d. = 100%
-let progressPercent = 0;
-if (today < adventStart) {
-  progressPercent = 0;
-} else if (today > adventEnd) {
-  progressPercent = 100;
-} else if (currentMonth === 12) {
-  progressPercent = (currentDay / 24) * 100;
-}
-
-document.getElementById("progressFill").style.width = progressPercent + "%";
-
-// Tekstas „X diena iš 24“
-let progressLabel =
-  (currentMonth === 12 && currentDay >= 1 && currentDay <= 24)
-    ? `${currentDay} diena iš 24`
-    : "Laukiame gruodžio 🎁";
-
-// Dienos iki Kalėdų
-let daysLeft = daysBetween(today, christmasDate);
-if (daysLeft < 0) daysLeft = 0;
-
-document.getElementById("progressText").textContent =
-  daysLeft === 0
-    ? "Šiandien Kalėdos! 🎄"
-    : `Iki Kalėdų liko ${daysLeft} dienų! – ${progressLabel}`;
-
-// ---------- RODYTI ŠIANDIENOS ŽINUTĘ ----------
-function buildContent(data) {
-  let html = "";
-
-  if (data.text) {
-    html += `<p class="advent-text">${data.text}</p>`;
-  }
-
-  if (data.image) {
-    html += `<img class="advent-image" src="${data.image}" alt="Advento paveikslėlis">`;
-  }
-
-  // Tas pats YouTube video visoms dienoms
-  html += `
-    <iframe
-      src="https://www.youtube.com/embed/VNIHnKdNcKU"
-      allowfullscreen>
-    </iframe>
-  `;
-
-  return html || `<p class="advent-text">Šiai dienai staigmena dar neparuošta 😊</p>`;
-}
-
-if (currentMonth === 12 && messages[currentDay]) {
-  document.getElementById("content").innerHTML = buildContent(messages[currentDay]);
-} else if (currentMonth === 12 && currentDay > 24) {
-  document.getElementById("content").innerHTML =
-    `<p class="advent-text">🎄 Adventas baigėsi – linksmų Kalėdų! 🎁</p>`;
-} else {
-  document.getElementById("content").innerHTML =
-    `<p class="advent-text">❄️ Advento kalendorius atsidaro tik gruodį!</p>`;
-}
-</script>
-
-</body>
-</html>
-"
+      src="https://www.youtube.com/watch?v=VNIHnKdNcKU"
       allowfullscreen>
     </iframe>
   `;
