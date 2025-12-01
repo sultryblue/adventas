@@ -111,7 +111,7 @@
 
 <!-- ADVENT MESSAGE BOX -->
 <div class="box">
-  <h1>🎄 Advent Calendar 🎄</h1>
+  <h1>🎄 GIS advento kalendorius 🎄</h1>
   <div id="content">Loading...</div>
 </div>
 
@@ -119,8 +119,7 @@
 // ---------- ADVENT MESSAGES (edit these) ----------
 const messages = {
   1: {
-    text: "✨ December 1 — Welcome to the magical start of Advent!",
-    image: "https://raw.githubusercontent.com/USERNAME/REPO/main/image1.jpg",
+    text: "✨ Gruodžio 1!",
     song: "https://www.youtube.com/embed/E8gmARGvPlI"
   },
   2: {
@@ -175,7 +174,7 @@ if (currentMonth === 12 && currentDay >= 1 && currentDay <= 24) {
   progressLabel = "Waiting for December 🎁";
 }
 document.getElementById("progressText").textContent =
-  `Journey to Christmas: ${Math.round(progressPercent)}% – ${progressLabel}`;
+  `Iki Kalėdų liko: ${Math.round(progressPercent)}% – ${progressLabel}`;
 
 // ---------- SHOW TODAY'S MESSAGE ----------
 function buildContent(data) {
