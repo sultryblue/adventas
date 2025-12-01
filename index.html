@@ -25,21 +25,21 @@
     margin: 0 auto 40px auto; /* vieta apačioje */
   }
 
+  /* NUOTRAUKA VIRŠ PROGRESS BAR */
+  .top-photo {
+    width: 140px;                 /* dydis */
+    border-radius: 12px;
+    border: 3px solid #b30000;    /* raudonas rėmelis */
+    margin-bottom: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;           /* centre */
+  }
+
   .progress-bg {
     position: relative;
   }
-
-  /* jei turėsi 3 žmonių nuotrauką – gali įdėti čia vietoje tuščios juostos */
-  /*
-  .progress-bg img {
-    width: 100%;
-    max-width: 700px;
-    display: block;
-    margin: 0 auto;
-    border: 3px solid #b30000;
-    border-radius: 10px;
-  }
-  */
 
   .progress-bar {
     position: relative;
@@ -129,11 +129,13 @@
 </head>
 <body>
 
-<!-- VISADA MATOMA PROGRESO JUOSTA -->
+<!-- VISADA MATOMA PROGRESO JUOSTA + NUOTRAUKA VIRŠ JOS -->
 <div class="progress-wrapper">
+
+  <!-- ČIA ĮDĖK SAVO NUOTRAUKOS ADRESĄ -->
+  <img src="YOUR_PHOTO_URL_HERE" class="top-photo" alt="Viršutinė nuotrauka">
+
   <div class="progress-bg">
-    <!-- jei norėsi, gali įdėti paveikslėlį virš juostos -->
-    <!-- <img src="TAVO_NUOTRAUKOS_URL" alt="Žmonės laiko juostą"> -->
     <div class="progress-bar">
       <div class="progress-fill" id="progressFill"></div>
     </div>
