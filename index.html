@@ -16,22 +16,23 @@
   /* --- PROGRESS BAR AREA --- */
   .progress-wrapper {
     max-width: 700px;
-    margin: 0 auto 30px auto;
+    margin: 0 auto 40px auto; /* šiek tiek daugiau vietos apačioje */
   }
 
   .progress-bg {
     position: relative;
   }
 
-  /* juostelė ant viršaus (progreso juosta) */
+  /* jei turėsi nuotrauką, gali ją įdėti čia; kol kas – be paveikslėlio */
+  /* .progress-bg img { ... } */
+
   .progress-bar {
-    position: absolute;
-    left: 10%;
-    right: 10%;
-    bottom: 20%;      
-    height: 24px;
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.5); /* permatomas juodas fonas */
+    position: relative;
+    margin: 0 auto;
+    width: 80%;
+    height: 30px;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.6);
     overflow: hidden;
     border: 2px solid #b30000; /* raudonas rėmelis */
   }
@@ -39,13 +40,27 @@
   .progress-fill {
     height: 100%;
     width: 0%;
-    border-radius: 12px;
-    background: linear-gradient(90deg, #b30000, #ff4d4d); /* raudonas gradientas */
+    border-radius: 15px;
+    /* raudonai balti įstrižai dryžiai kaip candy cane */
+    background: repeating-linear-gradient(
+      45deg,
+      #b30000 0px,
+      #b30000 12px,
+      #ffffff 12px,
+      #ffffff 24px
+    );
+    background-size: 40px 40px;
+    animation: candyMove 1s linear infinite;
     transition: width 0.8s ease-out;
   }
 
+  @keyframes candyMove {
+    from { background-position: 0 0; }
+    to   { background-position: 40px 0; }
+  }
+
   .progress-text {
-    margin-top: 25px;
+    margin-top: 25px;   /* daugiau vietos tarp juostos ir teksto */
     font-weight: bold;
     color: #ffdf80; /* švelni auksinė */
     text-shadow: 1px 1px 3px black;
@@ -59,12 +74,12 @@
     border-radius: 14px;
     max-width: 600px;
     margin: 0 auto;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); /* švytėjimas */
-    border: 3px solid #b30000; /* raudonas rėmelis */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    border: 3px solid #b30000;
   }
 
   .box h1 {
-    color: #b30000; /* raudona antraštė */
+    color: #b30000;
     text-shadow: 1px 1px 2px #000;
   }
 
@@ -72,7 +87,7 @@
     max-width: 100%;
     border-radius: 10px;
     margin-top: 15px;
-    border: 3px solid #0b2e13; /* tamsiai žalias rėmelis */
+    border: 3px solid #0b2e13;
   }
 
   iframe {
@@ -80,18 +95,17 @@
     width: 100%;
     max-width: 420px;
     height: 240px;
-    border: 3px solid #b30000; /* raudonas rėmelis */
+    border: 3px solid #b30000;
     border-radius: 6px;
   }
 </style>
-
 </head>
 <body>
 
 <!-- VISADA MATOMA PROGRESO JUOSTA -->
 <div class="progress-wrapper">
   <div class="progress-bg">
-    <!-- Pakeiskite SRC į savo nuotraukos adresą iš GitHub -->
+    <!-- jei norėsi, gali čia įdėti <img src="TAVO_ADRESAS" ...> -->
     <div class="progress-bar">
       <div class="progress-fill" id="progressFill"></div>
     </div>
@@ -110,13 +124,10 @@
 const messages = {
   1: {
     text: "✨ Gruodžio 1! Prasideda mūsų GIS advento kelionė!",
-    // Jei norite paveikslėlio iš GitHub:
-    // image: "https://raw.githubusercontent.com/USERNAME/REPO/main/diena1.jpg",
     song: "https://www.youtube.com/embed/E8gmARGvPlI"
   },
   2: {
     text: "❄️ Gruodžio 2! Šiandien pasileisk kokią kalėdinę dainą dirbdama(s).",
-    // image: "https://raw.githubusercontent.com/USERNAME/REPO/main/diena2.jpg",
     song: "https://www.youtube.com/embed/0bhsXykXxfg"
   },
   3: {
@@ -131,31 +142,34 @@ const today = new Date();
 const year = today.getFullYear();
 
 // Adventas nuo gruodžio 1 iki 24
-const adventStart = new Date(year, 11, 1);   // mėnuo 11 = gruodis
-const adventEnd   = new Date(year, 11, 24);  // iki 24 (imtinai)
+const adventStart = new Date(year, 11, 1);   // 11 = gruodis
+const adventEnd   = new Date(year, 11, 24);  // 24 d.
 
 // KALĖDOS: jei nori gruodžio 25 – pakeisk 24 į 25
 const christmasDate = new Date(year, 11, 24);
 
-let progressPercent = 0;
 const currentDay = today.getDate();
 const currentMonth = today.getMonth() + 1;
 
-// helper: dienų skaičiavimas
+// helper: dienų skaičiavimas (tik data, be laiko)
+function stripTime(d) {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
 function daysBetween(d1, d2) {
   const oneDayMs = 24 * 60 * 60 * 1000;
-  return Math.round((d2 - d1) / oneDayMs);
+  return Math.round((stripTime(d2) - stripTime(d1)) / oneDayMs);
 }
 
-// PROGRESO PROCENTAI: 0% gruodžio 1, 100% gruodžio 24
+// PROGRESO PROCENTAI:
+// gruodžio 1 → ~4 %, gruodžio 24 → 100 %
+let progressPercent = 0;
 if (today < adventStart) {
   progressPercent = 0;
 } else if (today > adventEnd) {
   progressPercent = 100;
 } else if (currentMonth === 12) {
-  // diena 1 → 0%, diena 24 → 100%
   const dayNumber = currentDay; // 1–24
-  const fraction = (dayNumber - 1) / 23; // 23 intervalai tarp 1 ir 24
+  const fraction = dayNumber / 24; // taip 1 d. jau šiek tiek užpildo
   progressPercent = fraction * 100;
 }
 
@@ -171,10 +185,8 @@ if (currentMonth === 12 && currentDay >= 1 && currentDay <= 24) {
   progressLabel = "Laukiame gruodžio 🎁";
 }
 
-// --- REALUS DIENŲ SKAIČIUS IKI KALĖDŲ ---
-const oneDayMs = 24 * 60 * 60 * 1000;
-let diffMs = christmasDate - today;
-let daysLeft = Math.ceil(diffMs / oneDayMs);
+// REALUS DIENŲ SKAIČIUS IKI KALĖDŲ
+let daysLeft = daysBetween(today, christmasDate);
 if (daysLeft < 0) daysLeft = 0;
 
 const progressTextEl = document.getElementById("progressText");
