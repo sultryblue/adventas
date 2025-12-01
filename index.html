@@ -15,7 +15,7 @@
     font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background: linear-gradient(#0b2e13, #145c1f);
     text-align: center;
-    padding: 5px 10px 40px 10px;
+    padding: 10px 10px 40px 10px; /* mažesnis tarpas viršuje */
     color: #fff;
   }
 
@@ -27,10 +27,10 @@
 
   /* Didelė nuotrauka viršuje, be rėmelių, susilieja su juosta */
   .top-photo {
-    width: 45%;
+    width: 45%;            /* galima keisti 40–55 pagal skonį */
     display: block;
     margin: 0 auto;
-    margin-bottom: -15px;   /* priglaudžia nuotrauką prie juostos */
+    margin-bottom: -5px;   /* priglaudžia nuotrauką prie juostos */
     border: none;
     border-radius: 0;
     box-shadow: none;
@@ -76,7 +76,7 @@
   }
 
   .progress-text {
-    margin-top: 25px;
+    margin-top: 20px;
     font-weight: 700;
     color: #ffdf80;
     text-shadow: 1px 1px 3px black;
@@ -100,6 +100,7 @@
     text-shadow: 1px 1px 2px #000;
     margin-top: 0;
     margin-bottom: 15px;
+    font-size: 1.6rem;
   }
 
   /* Advento žinutės — BOLD, raudonos, su švytėjimu */
@@ -126,6 +127,69 @@
     border: 3px solid #b30000;
     border-radius: 6px;
   }
+
+  /* --- RESPONSYVUS DIZAINAS --- */
+
+  /* Telefonams ir smulkiems ekranams */
+  @media (max-width: 600px) {
+
+    body {
+      padding: 10px 5px 30px 5px;
+    }
+
+    .top-photo {
+      width: 70%;
+      margin-bottom: -3px;
+    }
+
+    .progress-bar {
+      width: 90%;
+      height: 26px;
+    }
+
+    .progress-text {
+      font-size: 1rem;
+      margin-top: 15px;
+    }
+
+    .box {
+      padding: 18px;
+      margin-top: 15px;
+    }
+
+    .box h1 {
+      font-size: 1.3rem;
+    }
+
+    .advent-text {
+      font-size: 1rem;
+    }
+
+    iframe {
+      max-width: 100%;
+      height: 200px;
+    }
+  }
+
+  /* Labai maži ekranai (320–400px) */
+  @media (max-width: 400px) {
+
+    .top-photo {
+      width: 80%;
+    }
+
+    .progress-bar {
+      height: 22px;
+    }
+
+    .progress-text {
+      font-size: 0.95rem;
+    }
+
+    .advent-text {
+      font-size: 0.95rem;
+    }
+  }
 </style>
 </head>
 <body>
@@ -133,8 +197,8 @@
 <!-- FOTO + PROGRESS BAR -->
 <div class="progress-wrapper">
 
-  <!-- ĮDĖK SAVO NUOTRAUKOS URL ČIA -->
-  <img src="https://raw.githubusercontent.com/sultryblue/adventas/main/foto3.png" class="top-photo" alt="Viršutinė nuotrauka">
+  <!-- ČIA ĮDĖK SAVO NUOTRAUKOS URL -->
+  <img src="YOUR_PHOTO_URL_HERE" class="top-photo" alt="Viršutinė nuotrauka">
 
   <div class="progress-bg">
     <div class="progress-bar">
@@ -178,7 +242,7 @@ const year = today.getFullYear();
 const adventStart = new Date(year, 11, 1);   // gruodžio 1
 const adventEnd   = new Date(year, 11, 24);  // gruodžio 24
 
-// Kalėdų data (jei nori 25 d., pakeisk 24 į 25)
+// Kalėdos: jei nori 25 d., pakeisk 24 į 25
 const christmasDate = new Date(year, 11, 24);
 
 const currentDay = today.getDate();
@@ -207,7 +271,7 @@ document.getElementById("progressFill").style.width = progressPercent + "%";
 // Tekstas „Diena X iš 24“
 let progressLabel =
   (currentMonth === 12 && currentDay >= 1 && currentDay <= 24)
-    ? `${currentDay} diena iš 24`
+    ? `Diena ${currentDay} iš 24`
     : "Laukiame gruodžio 🎁";
 
 // Dienos iki Kalėdų
@@ -217,7 +281,7 @@ if (daysLeft < 0) daysLeft = 0;
 document.getElementById("progressText").textContent =
   daysLeft === 0
     ? "Šiandien Kalėdos! 🎄"
-    : `Iki Kalėdų liko ${daysLeft} dienos! – ${progressLabel}`;
+    : `Iki Kalėdų liko ${daysLeft} d. – ${progressLabel}`;
 
 // ---------- RODYTI ŠIANDIENOS ŽINUTĘ ----------
 function buildContent(data) {
