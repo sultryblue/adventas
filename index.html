@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advent Calendar</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f8f3e9;
+    text-align: center;
+    padding: 40px 10px;
+  }
+
+  /* --- PROGRESS BAR AREA --- */
+  .progress-wrapper {
+    max-width: 700px;
+    margin: 0 auto 30px auto;
+  }
+
+  .progress-bg {
+    position: relative;
+  }
+
+  .progress-bg img {
+    width: 100%;
+    max-width: 700px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* the bar that the people are “holding” */
+  .progress-bar {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    bottom: 20%;      /* adjust if needed so it sits nicely on the bar */
+    height: 20px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.5);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #c50000, #ff7b00);
+    transition: width 0.8s ease-out;
+  }
+
+  .progress-text {
+    margin-top: 8px;
+    font-weight: bold;
+  }
+
+  /* --- MAIN CONTENT BOX --- */
+  .box {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  img.advent-image {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 15px;
+  }
+
+  iframe {
+    margin-top: 15px;
+    width: 100%;
+    max-width: 400px;
+    height: 225px;
+    border: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- ALWAYS VISIBLE PROGRESS BAR -->
+<div class="progress-wrapper">
+  <div class="progress-bg">
+    <!-- your drawing/photo of the 3 people holding the bar -->
+    <img src="YOUR_IMAGE_URL_HERE" alt="People holding Christmas bar">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+  <div class="progress-text" id="progressText"></div>
+</div>
+
+<!-- ADVENT MESSAGE BOX -->
+<div class="box">
+  <h1>🎄 Advent Calendar 🎄</h1>
+  <div id="content">Loading...</div>
+</div>
+
+<script>
+// ---------- ADVENT MESSAGES (edit these) ----------
+const messages = {
+  1: {
+    text: "✨ December 1 — Welcome to the magical start of Advent!",
+    image: "https://raw.githubusercontent.com/USERNAME/REPO/main/image1.jpg",
+    song: "https://www.youtube.com/embed/E8gmARGvPlI"
+  },
+  2: {
+    text: "❄️ December 2 — Wishing you warmth and joy!",
+    image: "https://raw.githubusercontent.com/USERNAME/REPO/main/image2.jpg",
+    song: "https://www.youtube.com/embed/0bhsXykXxfg"
+  },
+  // ... continue up to day 24 ...
+};
+
+// ---------- DATE + PROGRESS BAR LOGIC ----------
+const today = new Date();
+const year = today.getFullYear();
+
+// Advent from 1 Dec to 24 Dec of current year
+const adventStart = new Date(year, 11, 1);   // month 11 = December
+const adventEnd   = new Date(year, 11, 24);  // inclusive
+
+let progressPercent;
+let currentDay = today.getDate();
+let currentMonth = today.getMonth() + 1;
+
+// calculate days between two dates
+function daysBetween(d1, d2) {
+  const oneDayMs = 24 * 60 * 60 * 1000;
+  return Math.round((d2 - d1) / oneDayMs);
+}
+
+// total days in advent (inclusive)
+const totalAdventDays = daysBetween(adventStart, adventEnd);
+
+// if before 1 Dec -> 0%, after 24 Dec -> 100%
+if (today < adventStart) {
+  progressPercent = 0;
+} else if (today > adventEnd) {
+  progressPercent = 100;
+} else {
+  const daysSoFar = daysBetween(adventStart, today);
+  progressPercent = (daysSoFar / totalAdventDays) * 100;
+}
+
+// apply to bar
+const fill = document.getElementById("progressFill");
+fill.style.width = progressPercent + "%";
+
+// progress text (e.g. "Day 5 of 24")
+let progressLabel;
+if (currentMonth === 12 && currentDay >= 1 && currentDay <= 24) {
+  const dayNumber = currentDay; // 1–24 in Dec
+  progressLabel = `Day ${dayNumber} of 24`;
+} else {
+  progressLabel = "Waiting for December 🎁";
+}
+document.getElementById("progressText").textContent =
+  `Journey to Christmas: ${Math.round(progressPercent)}% – ${progressLabel}`;
+
+// ---------- SHOW TODAY'S MESSAGE ----------
+function buildContent(data) {
+  let html = "";
+  if (data.text) {
+    html += `<p>${data.text}</p>`;
+  }
+  if (data.image) {
+    html += `<img class="advent-image" src="${data.image}" alt="Advent image">`;
+  }
+  if (data.song) {
+    html += `<iframe src="${data.song}" allowfullscreen></iframe>`;
+  }
+  return html || "<p>No surprise for this day yet 😊</p>";
+}
+
+if (currentMonth === 12 && messages[currentDay]) {
+  document.getElementById("content").innerHTML = buildContent(messages[currentDay]);
+} else if (currentMonth === 12 && currentDay > 24) {
+  document.getElementById("content").innerHTML = "🎄 Advent is over — Merry Christmas! 🎁";
+} else {
+  document.getElementById("content").innerHTML = "❄️ Advent calendar opens only in December!";
+}
+</script>
+
+</body>
+</html>
