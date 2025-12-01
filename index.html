@@ -6,10 +6,11 @@
 <title>Advent Calendar</title>
 <style>
   body {
-    font-family: Arial, sans-serif;
-    background: #f8f3e9;
+    font-family: "Arial", sans-serif;
+    background: linear-gradient(#0b2e13, #145c1f); /* dark → brighter green */
     text-align: center;
     padding: 40px 10px;
+    color: #fff; /* white text */
   }
 
   /* --- PROGRESS BAR AREA --- */
@@ -27,7 +28,72 @@
     max-width: 700px;
     display: block;
     margin: 0 auto;
+    border: 3px solid #b30000;      /* red frame */
+    border-radius: 10px;
   }
+
+  /* bar placed over the image */
+  .progress-bar {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    bottom: 20%;      
+    height: 24px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.5); /* semi-transparent black behind the bar */
+    overflow: hidden;
+    border: 2px solid #b30000; /* red border */
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #b30000, #ff4d4d); /* red gradient */
+    transition: width 0.8s ease-out;
+  }
+
+  .progress-text {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #ffdf80; /* soft gold */
+    text-shadow: 1px 1px 3px black;
+  }
+
+  /* --- MAIN CONTENT BOX --- */
+  .box {
+    background: #ffffff;
+    color: #000;
+    padding: 25px;
+    border-radius: 14px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); /* glow */
+    border: 3px solid #b30000; /* red border */
+  }
+
+  .box h1 {
+    color: #b30000; /* red title */
+    text-shadow: 1px 1px 2px #000;
+  }
+
+  img.advent-image {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 15px;
+    border: 3px solid #0b2e13; /* dark green frame */
+  }
+
+  iframe {
+    margin-top: 15px;
+    width: 100%;
+    max-width: 420px;
+    height: 240px;
+    border: 3px solid #b30000; /* red frame */
+    border-radius: 6px;
+  }
+</style>
+
 
   /* the bar that the people are “holding” */
   .progress-bar {
