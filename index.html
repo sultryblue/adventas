@@ -120,8 +120,11 @@
     border: 3px solid #0b2e13;
   }
 
-  iframe {
+  .video-wrapper {
     margin-top: 15px;
+  }
+
+  .video-wrapper iframe {
     width: 100%;
     max-width: 420px;
     height: 240px;
@@ -166,8 +169,7 @@
       font-size: 1rem;
     }
 
-    iframe {
-      max-width: 100%;
+    .video-wrapper iframe {
       height: 200px;
     }
   }
@@ -198,7 +200,6 @@
 <!-- FOTO + PROGRESS BAR -->
 <div class="progress-wrapper">
 
-  <!-- Nuotrauka viršuje -->
   <img src="https://raw.githubusercontent.com/sultryblue/adventas/main/foton.PNG"
        class="top-photo" alt="Viršutinė nuotrauka">
 
@@ -214,20 +215,29 @@
 <!-- ADVENTO ŽINUČIŲ DĖŽUTĖ -->
 <div class="box">
   <h1>🎄 GIS advento kalendorius 🎄</h1>
+
   <div id="content">Kraunama...</div>
+
+  <!-- TAS PATS VIDEO VISOMS DIENOMS -->
+  <div class="video-wrapper">
+    <iframe
+      src="https://www.youtube.com/embed/VNIHnKdNcKU"
+      allowfullscreen>
+    </iframe>
+  </div>
 </div>
 
 <script>
 // ---------- ADVENTO ŽINUTĖS ----------
 const messages = {
   1: {
-    text: "✨ Gruodžio 1! Prasideda mūsų GIS advento kelionė!",
+    text: "✨ Gruodžio 1! Prasideda mūsų GIS advento kelionė!"
   },
   2: {
-    text: "❄️ Gruodžio 2! Šiandien pasileisk kokią kalėdinę dainą dirbdama(s).",
+    text: "❄️ Gruodžio 2! Šiandien pasileisk kokią kalėdinę dainą dirbdama(s)."
   },
   3: {
-    text: "🎶 Gruodžio 3! Maža pertraukėlė su šia daina? 🙂",
+    text: "🎶 Gruodžio 3! Maža pertraukėlė su šia daina? 🙂"
   }
   // ... tęsk iki 24 dienos ...
 };
@@ -289,15 +299,6 @@ function buildContent(data) {
   if (data.image) {
     html += `<img class="advent-image" src="${data.image}" alt="Advento paveikslėlis">`;
   }
-
-  // Tas pats YouTube video visoms dienoms
-  html += `
-    <iframe
-      src="https://www.youtube.com/watch?v=VNIHnKdNcKU"
-      allowfullscreen>
-    </iframe>
-  `;
-
   return html || `<p class="advent-text">Šiai dienai staigmena dar neparuošta 😊</p>`;
 }
 
