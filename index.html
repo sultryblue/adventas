@@ -271,7 +271,7 @@ document.getElementById("progressFill").style.width = progressPercent + "%";
 // Tekstas „Diena X iš 24“
 let progressLabel =
   (currentMonth === 12 && currentDay >= 1 && currentDay <= 24)
-    ? `Diena ${currentDay} iš 24`
+    ? `${currentDay} diena iš 24`
     : "Laukiame gruodžio 🎁";
 
 // Dienos iki Kalėdų
@@ -281,7 +281,7 @@ if (daysLeft < 0) daysLeft = 0;
 document.getElementById("progressText").textContent =
   daysLeft === 0
     ? "Šiandien Kalėdos! 🎄"
-    : `Iki Kalėdų liko ${daysLeft} d. – ${progressLabel}`;
+    : `Iki Kalėdų liko ${daysLeft} dienos! – ${progressLabel}`;
 
 // ---------- RODYTI ŠIANDIENOS ŽINUTĘ ----------
 function buildContent(data) {
