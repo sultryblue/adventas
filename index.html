@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lt">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advent Calendar</title>
+<title>Advento kalendorius</title>
 <style>
   body {
     font-family: "Arial", sans-serif;
-    background: linear-gradient(#0b2e13, #145c1f); /* dark → brighter green */
+    background: linear-gradient(#0b2e13, #145c1f); /* tamsi → šviesesnė žalia */
     text-align: center;
     padding: 40px 10px;
-    color: #fff; /* white text */
+    color: #fff; /* balti užrašai */
   }
 
   /* --- PROGRESS BAR AREA --- */
@@ -23,16 +23,17 @@
     position: relative;
   }
 
+  /* ČIA ĮDĖKITE 3 ŽMONIŲ NUOTRAUKĄ, kurie laiko „lazdą“ */
   .progress-bg img {
     width: 100%;
     max-width: 700px;
     display: block;
     margin: 0 auto;
-    border: 3px solid #b30000;      /* red frame */
+    border: 3px solid #b30000;      /* raudonas rėmelis */
     border-radius: 10px;
   }
 
-  /* bar placed over the image */
+  /* juostelė ant viršaus (progreso juosta) */
   .progress-bar {
     position: absolute;
     left: 10%;
@@ -40,27 +41,27 @@
     bottom: 20%;      
     height: 24px;
     border-radius: 12px;
-    background: rgba(0, 0, 0, 0.5); /* semi-transparent black behind the bar */
+    background: rgba(0, 0, 0, 0.5); /* permatomas juodas fonas */
     overflow: hidden;
-    border: 2px solid #b30000; /* red border */
+    border: 2px solid #b30000; /* raudonas rėmelis */
   }
 
   .progress-fill {
     height: 100%;
     width: 0%;
     border-radius: 12px;
-    background: linear-gradient(90deg, #b30000, #ff4d4d); /* red gradient */
+    background: linear-gradient(90deg, #b30000, #ff4d4d); /* raudonas gradientas */
     transition: width 0.8s ease-out;
   }
 
   .progress-text {
-    margin-top: 10px;
+    margin-top: 25px;
     font-weight: bold;
-    color: #ffdf80; /* soft gold */
+    color: #ffdf80; /* švelni auksinė */
     text-shadow: 1px 1px 3px black;
   }
 
-  /* --- MAIN CONTENT BOX --- */
+  /* --- PAGRINDINĖ DĖŽUTĖ --- */
   .box {
     background: #ffffff;
     color: #000;
@@ -68,12 +69,12 @@
     border-radius: 14px;
     max-width: 600px;
     margin: 0 auto;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); /* glow */
-    border: 3px solid #b30000; /* red border */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); /* švytėjimas */
+    border: 3px solid #b30000; /* raudonas rėmelis */
   }
 
   .box h1 {
-    color: #b30000; /* red title */
+    color: #b30000; /* raudona antraštė */
     text-shadow: 1px 1px 2px #000;
   }
 
@@ -81,7 +82,7 @@
     max-width: 100%;
     border-radius: 10px;
     margin-top: 15px;
-    border: 3px solid #0b2e13; /* dark green frame */
+    border: 3px solid #0b2e13; /* tamsiai žalias rėmelis */
   }
 
   iframe {
@@ -89,7 +90,7 @@
     width: 100%;
     max-width: 420px;
     height: 240px;
-    border: 3px solid #b30000; /* red frame */
+    border: 3px solid #b30000; /* raudonas rėmelis */
     border-radius: 6px;
   }
 </style>
@@ -97,9 +98,11 @@
 </head>
 <body>
 
-<!-- ALWAYS VISIBLE PROGRESS BAR -->
+<!-- VISADA MATOMA PROGRESO JUOSTA -->
 <div class="progress-wrapper">
   <div class="progress-bg">
+    <!-- Pakeiskite SRC į savo nuotraukos adresą iš GitHub -->
+    <img src="YOUR_IMAGE_URL_HERE" alt="Žmonės laiko Kalėdų juostą">
     <div class="progress-bar">
       <div class="progress-fill" id="progressFill"></div>
     </div>
@@ -107,94 +110,112 @@
   <div class="progress-text" id="progressText"></div>
 </div>
 
-<!-- ADVENT MESSAGE BOX -->
+<!-- ADVENTO ŽINUTĖS DĖŽUTĖ -->
 <div class="box">
   <h1>🎄 GIS advento kalendorius 🎄</h1>
-  <div id="content">Loading...</div>
+  <div id="content">Kraunama...</div>
 </div>
 
 <script>
-// ---------- ADVENT MESSAGES (edit these) ----------
+// ---------- ADVENTO ŽINUTĖS (TAISYTI ČIA) ----------
 const messages = {
   1: {
-    text: "✨ Gruodžio 1!",
+    text: "✨ Gruodžio 1! Prasideda mūsų GIS advento kelionė!",
+    // Jei norite paveikslėlio iš GitHub:
+    // image: "https://raw.githubusercontent.com/USERNAME/REPO/main/diena1.jpg",
     song: "https://www.youtube.com/embed/E8gmARGvPlI"
   },
   2: {
-    text: "❄️ December 2 — Wishing you warmth and joy!",
-    image: "https://raw.githubusercontent.com/USERNAME/REPO/main/image2.jpg",
+    text: "❄️ Gruodžio 2! Šiandien pasileisk kokią kalėdinę dainą dirbdama(s).",
+    // image: "https://raw.githubusercontent.com/USERNAME/REPO/main/diena2.jpg",
     song: "https://www.youtube.com/embed/0bhsXykXxfg"
   },
-  // ... continue up to day 24 ...
+  3: {
+    text: "🎶 Gruodžio 3! Maža pertraukėlė su šia daina? 🙂",
+    song: "https://www.youtube.com/embed/-ZYzx7YQsYA"
+  }
+  // ... tęskite iki 24 dienos ...
 };
 
-// ---------- DATE + PROGRESS BAR LOGIC ----------
+// ---------- DATA + PROGRESO LOGIKA ----------
 const today = new Date();
 const year = today.getFullYear();
 
-// Advent from 1 Dec to 24 Dec of current year
-const adventStart = new Date(year, 11, 1);   // month 11 = December
-const adventEnd   = new Date(year, 11, 24);  // inclusive
+// Adventas nuo gruodžio 1 iki 24
+const adventStart = new Date(year, 11, 1);   // mėnuo 11 = gruodis
+const adventEnd   = new Date(year, 11, 24);  // iki 24 (imtinai)
 
-let progressPercent;
-let currentDay = today.getDate();
-let currentMonth = today.getMonth() + 1;
+// KALĖDOS: jei nori gruodžio 25 – pakeisk 24 į 25
+const christmasDate = new Date(year, 11, 24);
 
-// calculate days between two dates
+let progressPercent = 0;
+const currentDay = today.getDate();
+const currentMonth = today.getMonth() + 1;
+
+// helper: dienų skaičiavimas
 function daysBetween(d1, d2) {
   const oneDayMs = 24 * 60 * 60 * 1000;
   return Math.round((d2 - d1) / oneDayMs);
 }
 
-// total days in advent (inclusive)
-const totalAdventDays = daysBetween(adventStart, adventEnd);
-
-// if before 1 Dec -> 0%, after 24 Dec -> 100%
+// PROGRESO PROCENTAI: 0% gruodžio 1, 100% gruodžio 24
 if (today < adventStart) {
   progressPercent = 0;
 } else if (today > adventEnd) {
   progressPercent = 100;
-} else {
-  const daysSoFar = daysBetween(adventStart, today);
-  progressPercent = (daysSoFar / totalAdventDays) * 100;
+} else if (currentMonth === 12) {
+  // diena 1 → 0%, diena 24 → 100%
+  const dayNumber = currentDay; // 1–24
+  const fraction = (dayNumber - 1) / 23; // 23 intervalai tarp 1 ir 24
+  progressPercent = fraction * 100;
 }
 
-// apply to bar
+// pritaikom juostai
 const fill = document.getElementById("progressFill");
 fill.style.width = progressPercent + "%";
 
-// progress text (e.g. "Day 5 of 24")
+// Tekstas: „Diena X iš 24“
 let progressLabel;
 if (currentMonth === 12 && currentDay >= 1 && currentDay <= 24) {
-  const dayNumber = currentDay; // 1–24 in Dec
-  progressLabel = `Diena ${dayNumber} iš 24`;
+  progressLabel = `Diena ${currentDay} iš 24`;
 } else {
-  progressLabel = "Waiting for December 🎁";
+  progressLabel = "Laukiame gruodžio 🎁";
 }
-document.getElementById("progressText").textContent =
-  `Iki Kalėdų liko: ${Math.round(progressPercent)}% – ${progressLabel}`;
 
-// ---------- SHOW TODAY'S MESSAGE ----------
+// --- REALUS DIENŲ SKAIČIUS IKI KALĖDŲ ---
+const oneDayMs = 24 * 60 * 60 * 1000;
+let diffMs = christmasDate - today;
+let daysLeft = Math.ceil(diffMs / oneDayMs);
+if (daysLeft < 0) daysLeft = 0;
+
+const progressTextEl = document.getElementById("progressText");
+if (daysLeft === 0) {
+  progressTextEl.textContent = "Šiandien Kalėdos! 🎄";
+} else {
+  progressTextEl.textContent = `Iki Kalėdų liko ${daysLeft} d. – ${progressLabel}`;
+}
+
+// ---------- RODYTI ŠIANDIENOS ŽINUTĘ ----------
 function buildContent(data) {
   let html = "";
   if (data.text) {
     html += `<p>${data.text}</p>`;
   }
   if (data.image) {
-    html += `<img class="advent-image" src="${data.image}" alt="Advent image">`;
+    html += `<img class="advent-image" src="${data.image}" alt="Advento paveikslėlis">`;
   }
   if (data.song) {
     html += `<iframe src="${data.song}" allowfullscreen></iframe>`;
   }
-  return html || "<p>No surprise for this day yet 😊</p>";
+  return html || "<p>Šiai dienai staigmena dar neparuošta 😊</p>";
 }
 
 if (currentMonth === 12 && messages[currentDay]) {
   document.getElementById("content").innerHTML = buildContent(messages[currentDay]);
 } else if (currentMonth === 12 && currentDay > 24) {
-  document.getElementById("content").innerHTML = "🎄 Advent is over — Merry Christmas! 🎁";
+  document.getElementById("content").innerHTML = "🎄 Adventas baigėsi – linksmų Kalėdų! 🎁";
 } else {
-  document.getElementById("content").innerHTML = "❄️ Advent calendar opens only in December!";
+  document.getElementById("content").innerHTML = "❄️ Advento kalendorius atsidaro tik gruodį!";
 }
 </script>
 
