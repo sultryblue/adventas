@@ -46,7 +46,6 @@
     position: relative;
   }
 
-  /* Wrapper, kurio plotis = progreso procentas */
   .progress-fill-wrapper {
     position: absolute;
     left: 0;
@@ -58,17 +57,16 @@
     transition: width 0.7s ease-out;
   }
 
-  /* Candy cane „lazdelė“ viduje */
   .progress-candy {
     position: absolute;
     left: 0;
     top: 0;
-    width: 200%;          /* dvigubas plotis, kad raštas visada būtų vientisas */
+    width: 200%;
     height: 100%;
     background: repeating-linear-gradient(
       45deg,
       #ff0000 0 15px,
-      #ffffff 15px 28px
+      #ffffff 15px 27px
     );
     background-size: 40px 40px;
     animation: moveStripes 2s linear infinite;
@@ -87,17 +85,123 @@
     text-shadow: 1px 1px 3px black;
   }
 
-  /* ---- 3D DOVANĖLĖ ---- */
+  /* ---- GRAŽI „GIFT“ DĖŽUTĖ (pagal tavo pavyzdį) ---- */
 
-  .gift-box {
+  .gift {
     position: relative;
-    width: 180px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     margin: 25px auto 0;
+    border-radius: 2px 2px 4px 4px / 2px 2px 16px 16px;
+    background:
+      linear-gradient(to top, transparent 0px, rgba(255,255,255,.3)),
+      linear-gradient(to top, transparent 0px, rgba(255,255,255,.3)),
+      linear-gradient(to top, transparent 0px, rgba(255,255,255,.35)),
+      linear-gradient(to top, rgba(0,0,0,0.4) 0px, rgba(0,0,0,.1)),
+      linear-gradient(to top, transparent 70px, rgba(0,0,0,0.6) 80px),
+      linear-gradient(to top, transparent 70px, rgba(0,0,0,0.6) 80px),
+      linear-gradient(
+        to right,
+        #338833 0px,
+        #33BB33 34px, #FF0000 34px,
+        #FF0000 36px, #FFFF00 36px,
+        #FFFF00 38px, #FF0000 38px,
+        #FF0000 62px, #FFFF00 62px,
+        #FFFF00 64px, #FF0000 64px,
+        #FF0000 66px, #33BB33 66px,
+        #338833 100px
+      ),
+      linear-gradient(
+        to right,
+        #338833 0px,
+        #33BB33 32px, #FF0000 32px,
+        #FF0000 34px, #FFFF00 34px,
+        #FFFF00 36px, #FF0000 36px,
+        #FF0000 60px, #FFFF00 60px,
+        #FFFF00 62px, #FF0000 62px,
+        #FF0000 64px, #33BB33 64px,
+        #338833 100px
+      );
+    background-size:
+      34px 5px,
+      36px 5px,
+      32px 20px,
+      96px 80px,
+      32px 80px,
+      32px 80px,
+      100px 20px,
+      96px 80px;
+    background-position:
+      0px 0px,
+      66px 0px,
+      34px 0px,
+      2px 20px,
+      2px 20px,
+      66px 20px,
+      0px 0px,
+      2px 20px;
+    background-repeat: no-repeat;
+    box-shadow: 
+      0px 20px 40px -18px rgba(0,0,0,0.25),
+      0px -20px 15px -10px rgba(0,0,0,0.2);
     cursor: pointer;
-    perspective: 900px;
   }
 
+  .gift::before {
+    content: '';
+    position: absolute;
+    top: -105px;
+    left: -20px;
+    width: 32px;
+    height: 40px;
+    border-radius: 10px 5px 0px 0px;
+    box-shadow: inset -4px 5px 10px rgba(255,255,255,0.5);
+    background: 
+      linear-gradient(
+        to right,
+        transparent 0px, #FF0000 0px,
+        #FF0000 2px, #FFFF00 2px,
+        #FFFF00 4px, #FF0000 4px,
+        #FF0000 28px, #FFFF00 28px,
+        #FFFF00 30px, #FF0000 30px,
+        #FF0000 32px, transparent 32px
+      );
+    background-size: 32px 40px;
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    transform: rotateZ(-30deg) scale(0.8, 1);
+    z-index: -1;
+  }
+
+  .gift::after {
+    content: '';
+    position: absolute;
+    top: -90px;
+    right: -20px;
+    width: 32px;
+    height: 40px;
+    border-radius: 5px 10px 0px 0px;
+    box-shadow: 
+      inset -5px 5px 10px rgba(255,255,255,0.5),
+      0 0 20px rgba(0,0,0,0.5);
+    background: 
+      linear-gradient(
+        to right,
+        transparent 0px, #FF0000 0px,
+        #FF0000 2px, #FFFF00 2px,
+        #FFFF00 4px, #FF0000 4px,
+        #FF0000 28px, #FFFF00 28px,
+        #FFFF00 30px, #FF0000 30px,
+        #FF0000 32px, transparent 32px
+      );
+    background-size: 32px 40px;
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    transform: rotateZ(25deg) scale(0.75, 1);
+    z-index: -1;
+  }
+
+  /* Purtymas */
   .shake {
     animation: wobble 0.45s ease-in-out;
   }
@@ -110,100 +214,16 @@
     80% { transform: translateX(4px); }
   }
 
-  .gift-body {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 95px;
-    background: linear-gradient(145deg, #b30000, #6e0000);
-    border-radius: 0 0 12px 12px;
-    box-shadow:
-      0 4px 8px rgba(0,0,0,0.4),
-      inset 0 4px 8px rgba(255,255,255,0.12);
-  }
-
-  .ribbon-vertical {
-    position: absolute;
-    left: 50%;
-    width: 22px;
-    height: 100%;
-    transform: translateX(-50%);
-    background: linear-gradient(#ffe08a, #d5b25c);
-    border-radius: 4px;
-  }
-
-  .ribbon-horizontal {
-    position: absolute;
-    top: 38px;
-    height: 18px;
-    width: 100%;
-    background: linear-gradient(#ffe08a, #d5b25c);
-    border-radius: 4px;
-  }
-
-  /* Dangtis 3D */
-  .gift-lid {
-    position: absolute;
-    top: 0;
-    width: calc(100% + 18px);
-    height: 55px;
-    left: -9px;
-    background: linear-gradient(145deg, #d80000, #820000);
-    border-radius: 10px 10px 6px 6px;
-    transform-origin: bottom center;
-    box-shadow:
-      0 4px 8px rgba(0,0,0,0.4),
-      inset 0 4px 8px rgba(255,255,255,0.15);
-    z-index: 5;
-  }
-
-  .lid-open {
-    animation: openLid 1s forwards cubic-bezier(.45,-0.03,.52,1.45);
-  }
-
-  @keyframes openLid {
-    0% { transform: rotateX(0deg); }
-    100% { transform: rotateX(70deg) translateY(-20px); }
-  }
-
-  /* Bantukas */
-  .bow-top,
-  .bow-left,
-  .bow-right {
-    position: absolute;
-    width: 38px;
-    height: 22px;
-    background: #ffe08a;
-    border-radius: 50%;
-    top: -12px;
-  }
-
-  .bow-top {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .bow-left {
-    left: 18px;
-    transform: rotate(-25deg);
-  }
-
-  .bow-right {
-    right: 18px;
-    transform: rotate(25deg);
-  }
-
   /* Dienos numeris ant dėžutės */
   .day-number {
     position: absolute;
-    top: 65px;
+    top: 34px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 34px;
+    font-size: 28px;
     font-weight: 700;
-    color: #ffe08a;
-    text-shadow: 0 0 7px black;
-    z-index: 10;
+    color: #fffbe0;
+    text-shadow: 0 0 6px black;
   }
 
   /* Konfeti */
@@ -237,9 +257,9 @@
 </head>
 <body>
 
-<!-- AUDIO – įrašyk savo teisingą MP3 URL -->
+<!-- AUDIO – ČIA ĮDĖK SAVO TEISINGĄ MP3 NUORODĄ -->
 <audio id="bg-music">
-  <source src="TAVO_MP3_URL.mp3" type="audio/mpeg">
+  <source src="https://raw.githubusercontent.com/sultryblue/adventas/main/Justinas Jarutis - Kalėdos ištinka (mp3cut.net).mp3" type="audio/mpeg">
 </audio>
 
 <div class="progress-wrapper">
@@ -256,20 +276,8 @@
   <div class="progress-text" id="progressText"></div>
 </div>
 
-<!-- 3D DOVANĖLĖ -->
-<div id="giftBox" class="gift-box" onclick="openGift()">
-
-  <div class="gift-lid" id="giftLid">
-    <div class="bow-top"></div>
-    <div class="bow-left"></div>
-    <div class="bow-right"></div>
-  </div>
-
-  <div class="gift-body">
-    <div class="ribbon-vertical"></div>
-    <div class="ribbon-horizontal"></div>
-  </div>
-
+<!-- DOVANŲ DĖŽUTĖ PAGAL TAVO DIZAINĄ -->
+<div id="giftBox" class="gift" onclick="openGift()">
   <div class="day-number" id="dayNumber"></div>
 </div>
 
@@ -295,7 +303,7 @@ if (messages[day]) {
   todaysHtml = "❄️ Advento kalendorius atsidaro tik gruodį!";
 }
 
-/* --- PROGRESO JUOSTA (1–24 dienos) --- */
+/* --- PROGRESO JUOSTA --- */
 const adventEnd = new Date(today.getFullYear(), 11, 24);
 let progressPercent = 0;
 
@@ -307,8 +315,8 @@ const progressFillWrapper = document.getElementById("progressFillWrapper");
 progressFillWrapper.style.width = progressPercent + "%";
 
 let daysUntil = Math.max(0, Math.ceil((adventEnd - today) / 86400000));
-
 const progressTextEl = document.getElementById("progressText");
+
 if (daysUntil === 0) {
   progressTextEl.textContent = "Šiandien Kalėdos! 🎄";
 } else {
@@ -319,7 +327,6 @@ if (daysUntil === 0) {
 /* --- DOVANĖLĖS ATIDARYMAS --- */
 function openGift() {
   const box = document.getElementById("giftBox");
-  const lid = document.getElementById("giftLid");
   const number = document.getElementById("dayNumber");
   const content = document.getElementById("content");
   const audio = document.getElementById("bg-music");
@@ -327,23 +334,22 @@ function openGift() {
   // purtymas
   box.classList.add("shake");
 
-  // po purtymo pakeliam dangtį ir paslepiam numerį
+  // po purtymo paslepiam numerį
   setTimeout(() => {
-    lid.classList.add("lid-open");
     number.style.display = "none";
-  }, 380);
+  }, 350);
 
   // muzika
   audio.play().catch(() => {});
 
-  // po sekundės dingsta dėžutė, atsiranda žinutė
+  // po 1 s dingsta dėžutė, atsiranda žinutė
   setTimeout(() => {
     box.style.display = "none";
     content.textContent = todaysHtml;
     content.classList.remove("hidden");
   }, 1000);
 
-  // konfeti iš dėžutės centro
+  // konfeti
   for (let i = 0; i < 40; i++) {
     dropConfetti();
   }
@@ -358,7 +364,7 @@ function dropConfetti() {
   confetti.classList.add("confetti");
 
   confetti.style.left = (rect.left + rect.width / 2) + "px";
-  confetti.style.top = (rect.top + rect.height / 1.8) + "px";
+  confetti.style.top = (rect.top + rect.height / 2) + "px";
 
   const colors = ["#ffdf80", "#b30000", "#ffffff", "#ffb700"];
   confetti.style.backgroundColor =
