@@ -48,7 +48,6 @@
     margin: 15px auto 0;
     background: rgba(0,0,0,0.45);
     border-radius: 15px;
-    /* outline vietoj border – nebūna tarpelių */
     border: none;
     outline: 2px solid #b30000;
     outline-offset: 0;
@@ -100,15 +99,15 @@
   .gift-wrapper {
     margin-top: 25px;
     display: flex;
-    flex-direction: row;      /* rodyklė sone */
+    flex-direction: column;      /* dėžutė centre, rodyklė uždedama ant šono */
     align-items: center;
-    justify-content: center;
-    gap: 18px;
+    gap: 8px;
+    position: relative;
     transition: margin-top 0.6s ease;
   }
 
   .gift-wrapper.opened {
-    margin-top: 60px; /* kai atsidaro, viskas nuslenka žemyn */
+    margin-top: 80px; /* kai atsidaro, visas blokas nuslenka žemyn */
   }
 
   .gift {
@@ -116,6 +115,12 @@
     width: 120px;
     height: 120px;
     cursor: pointer;
+    transition: transform 0.6s ease;
+  }
+
+  /* Kai atidarom – nuleidžiam dėžutę, kad dangtis/progress nesikirstų */
+  .gift.opened {
+    transform: translateY(40px);
   }
 
   /* Dėžės korpusas */
@@ -237,12 +242,12 @@
     transform: translateX(-50%) scale(0.9);
   }
 
-  /* Žinutė – aukščiau, kad nesidengtų, bet vis dar prie dėžutės */
+  /* Žinutė – virš dėžutės, kad niekas neužstodų */
   .gift-message {
     position: absolute;
     left: 50%;
-    top: -10px; /* virš dangčio */
-    width: 200px;
+    top: -18px; /* virš dangčio */
+    width: 220px;
     transform: translate(-50%, 0);
     font-size: 0.9rem;
     font-weight: 600;
@@ -272,7 +277,7 @@
     80% { transform: translateX(4px); }
   }
 
-  /* Konfeti – smulkesni, daugiau ir daugiau į viršų/šonus */
+  /* Konfeti – smulkesni, jų daug ir skrenda į šonus/viršų */
 
   .confetti {
     position: absolute;
@@ -280,11 +285,12 @@
     height: 9px;
     opacity: 0;
     border-radius: 2px;
-    top: 40px; /* maždaug ties „tarpeliu“ */
+    top: 55px; /* maždaug per tarpą */
     left: 50%;
     transform: translateX(-50%) rotate(0deg);
     pointer-events: none;
     animation: burst 1.7s ease-out forwards;
+    z-index: 6;
   }
 
   @keyframes burst {
@@ -303,12 +309,15 @@
     }
   }
 
-  /* Rodyklė "Paspausk" – šone */
+  /* Rodyklė "Paspausk" – šone, bet dėžutė centre */
 
   .hint {
+    position: absolute;
+    top: 40px;
+    left: calc(50% + 90px); /* į dešinę nuo dėžutės centro */
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     color: #ffdf80;
     font-weight: 600;
     font-size: 0.95rem;
@@ -327,7 +336,7 @@
     height: 30px;
   }
 
-  /* Lenkta rodyklė, rodanti į dėžutę */
+  /* Lenkta rodyklė, rodanti į dėžutę iš dešinės į kairę */
   .hint-arrow::before {
     content: "";
     position: absolute;
@@ -338,7 +347,7 @@
     border-radius: 50%;
     border: 2px solid #ffdf80;
     border-color: transparent transparent #ffdf80 #ffdf80;
-    transform: rotate(-30deg); /* nukreipta į kairę, link dėžutės */
+    transform: rotate(-30deg);
   }
 
   .hint-arrow::after {
@@ -363,15 +372,14 @@
 
   .hidden { display: none; }
 
-  /* Šiek tiek prisitaikymo mažiems ekranams */
+  /* Prisitaikymas mažiems ekranams */
   @media (max-width: 480px) {
-    .gift-wrapper {
-      flex-direction: column;
-      gap: 10px;
+    .hint {
+      position: static;
+      margin-top: 8px;
     }
-
     .gift-wrapper.opened {
-      margin-top: 40px;
+      margin-top: 60px;
     }
   }
 
@@ -488,15 +496,15 @@ function openGift() {
   // foninė muzika
   audio.play().catch(() => {});
 
-  // įdedam žinutę prie dėžutės ir apačioje
+  // žinutė virš dėžės ir apačioje
   message.textContent = todaysHtml;
 
   // konfeti – daugiau ir smulkesni
-  for (let i = 0; i < 90; i++) {
+  for (let i = 0; i < 100; i++) {
     dropConfetti();
   }
 
-  // po purtymo atidarom dangtį ir nuleidžiam visą bloką žemyn
+  // po purtymo atidarom dangtį ir nuleidžiam dėžę
   setTimeout(() => {
     box.classList.remove("shake");
     box.classList.add("opened");
@@ -517,20 +525,18 @@ function dropConfetti() {
   confetti.style.backgroundColor =
     colors[Math.floor(Math.random() * colors.length)];
 
-  // daugiau į šonus ir viršų:
-  // x: -150 iki 150
-  const x = (Math.random() * 2 - 1) * 150;
+  // horizontaliai: -160 iki 160 (į abu šonus)
+  const x = (Math.random() * 2 - 1) * 160;
 
-  // y: daugiausia į viršų (neigiami), bet šiek tiek ir žemyn
-  // nuo -260 iki 60
-  const y = -260 + Math.random() * 320;
+  // vertikaliai: -120 iki 120 (daug matomų aplink dėžutę)
+  const y = (Math.random() * 2 - 1) * 120;
 
   confetti.style.setProperty("--x", x.toFixed(0));
   confetti.style.setProperty("--y", y.toFixed(0));
 
   // skirtingas greitis
   confetti.style.animationDuration =
-    (1.2 + Math.random() * 0.8) + "s";
+    (1.1 + Math.random() * 0.9) + "s";
 
   box.appendChild(confetti);
 
