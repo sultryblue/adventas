@@ -136,7 +136,7 @@ body {
   transform: translateX(-50%);
   border-left: 5px solid #7a1313;
   border-right: 5px solid #7a1313;
-  background: solid #0b2e13;
+  background: linear-gradient(to bottom, #f7e18a 0%, #d4af37 50%, #a6791a 100%);
 }
 
 /* Dangtis – 30% aukščio, 110% pločio, ant viršaus */
@@ -215,26 +215,9 @@ body {
   transform: translate(-50%, -50%) scale(0.9);
 }
 
-/* Žinutė virš dėžės */
+/* Žinutė virš dėžės (dabar naudosim tik galutiniam tekstui apačioje) */
 .gift-message {
-  position: absolute;
-  left: 50%;
-  top: -40px;
-  width: 240px;
-  transform: translate(-50%, 0);
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #ffdf80;
-  text-shadow: 0 0 4px rgba(0,0,0,0.9);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  z-index: 5;
-}
-
-.gift.opened .gift-message {
-  opacity: 1;
-  transform: translate(-50%, 6px);
+  display: none; /* nebereikia šios pozicijos */
 }
 
 /* Purtymas */
@@ -248,6 +231,27 @@ body {
   40% { transform: translateX(6px); }
   60% { transform: translateX(-4px); }
   80% { transform: translateX(4px); }
+}
+
+/* -------------------- GALUTINIS TEKSTAS PO DĖŽE -------------------- */
+
+.final-message {
+  margin-top: 20px;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffdf80;
+  text-shadow: 0 0 4px rgba(0,0,0,0.9);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.final-message.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* -------------------- KONFETI -------------------- */
@@ -394,24 +398,25 @@ body {
   </div>
 </div>
 
+<!-- Galutinis tekstas, kuris liks, kai dėžė dings -->
+<div id="finalMessage" class="final-message"></div>
+
 <script>
 /* --- DIENOS NUMERIS ANT DĖŽUTĖS --- */
 const today = new Date();
 const day = today.getDate();
 document.getElementById("dayNumber").textContent = day;
 
- /* ---DIENU ---*/ 
+/* --- DIENŲ ŽODIS --- */
 function getDaysWordLT(n) {
   // 21 ir 1 – "diena"
   if (n === 1 || n === 21) {
     return "diena";
   }
-
   // 23, 22, 9–2 – "dienos"
   if ([23, 22, 9, 8, 7, 6, 5, 4, 3, 2].includes(n)) {
     return "dienos";
   }
-
   // 20–10, 19–11 ir visi kiti – "dienų"
   return "dienų";
 }
@@ -452,25 +457,18 @@ if (daysUntil === 0) {
     `Iki Kalėdų liko ${daysUntil} ${word}!`;
 }
 
-/* --- DOVANĖLĖS ATIDARYMAS/UŽDARYMAS --- */
+/* --- DOVANĖLĖS ATIDARYMAS (VIENKARTINIS) --- */
 let opened = false;
 
 function toggleGift() {
   const box = document.getElementById("giftBox");
   const wrapper = document.getElementById("giftWrapper");
-  const message = document.getElementById("giftMessage");
   const hint = document.getElementById("giftHint");
   const audio = document.getElementById("bg-music");
+  const finalMessage = document.getElementById("finalMessage");
 
-  // jei jau atidaryta -> uždarom
-  if (opened) {
-    box.classList.remove("opened");
-    wrapper.classList.remove("opened");
-    opened = false;
-    return;
-  }
-
-  // jei uždaryta -> atidarom
+  // jeigu jau atidaryta – daugiau nieko nedarom
+  if (opened) return;
   opened = true;
 
   // purtymas
@@ -485,21 +483,26 @@ function toggleGift() {
     setTimeout(() => { hint.style.display = "none"; }, 400);
   }
 
-  // žinutė virš dėžės
-  message.textContent = todaysHtml;
-  message.style.opacity = "";
-  message.style.transform = "";
-
   // konfeti
   for (let i = 0; i < 80; i++) {
     dropConfetti();
   }
 
+  // po purtymo – atidarom dangtį
   setTimeout(() => {
     box.classList.remove("shake");
     box.classList.add("opened");
     wrapper.classList.add("opened");
   }, 450);
+
+  // po dar trumpo laiko – dėžė dingsta, lieka tik tekstas
+  setTimeout(() => {
+    box.style.display = "none";
+    wrapper.classList.remove("opened");
+
+    finalMessage.textContent = todaysHtml;
+    finalMessage.classList.add("visible");
+  }, 1600);
 }
 
 /* --- KONFETI FUNKCIJA --- */
