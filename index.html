@@ -105,7 +105,7 @@
   }
 
   .gift-wrapper.opened {
-    margin-top: 90px; /* daugiau vietos viršuje, kai atsidaro */
+    margin-top: 90px; /* kai atidaryta – nuslenka žemyn */
   }
 
   .gift {
@@ -116,7 +116,6 @@
     transition: transform 0.6s ease;
   }
 
-  /* Kai atidarom – dėžė šiek tiek nuleidžiama žemyn */
   .gift.opened {
     transform: translateY(50px);
   }
@@ -178,7 +177,12 @@
     z-index: 3;
   }
 
-  /* Bantai */
+  .gift.opened .gift-lid {
+    transform: translateY(-100px) rotate(-10deg);
+    box-shadow: 0 22px 26px rgba(0,0,0,0.6);
+  }
+
+  /* Bantukai */
   .bow-left,
   .bow-right {
     position: absolute;
@@ -214,12 +218,6 @@
     box-shadow: 0 0 6px rgba(0,0,0,0.4);
   }
 
-  /* Atvira dėžė – dangtis nueina aukščiau, daugiau tarpo */
-  .gift.opened .gift-lid {
-    transform: translateY(-100px) rotate(-10deg);
-    box-shadow: 0 22px 26px rgba(0,0,0,0.6);
-  }
-
   /* Dienos numeris */
   .day-number {
     position: absolute;
@@ -239,7 +237,7 @@
     transform: translateX(-50%) scale(0.9);
   }
 
-  /* Žinutė – virš dėžės, su didesne erdve */
+  /* Žinutė – virš dėžės, vieną kartą */
   .gift-message {
     position: absolute;
     left: 50%;
@@ -274,30 +272,14 @@
     80% { transform: translateX(4px); }
   }
 
-  /* KONFETI – atsitiktinės kryptys su CSS kintamaisiais */
-
-  .confetti {
+  /* Canvas konfeti – virš visko */
+  #confettiCanvas {
     position: fixed;
-    width: 6px;
-    height: 10px;
-    border-radius: 2px;
-    opacity: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
-    animation-name: burst;
-    animation-timing-function: ease-out;
-    animation-fill-mode: forwards;
     z-index: 999;
-  }
-
-  @keyframes burst {
-    0% {
-      opacity: 1;
-      transform: translate(0, 0) rotate(0deg);
-    }
-    100% {
-      opacity: 0;
-      transform: translate(var(--dx), var(--dy)) rotate(900deg);
-    }
   }
 
   /* Rodyklė "Paspausk" – šone, dėžė centre */
@@ -353,11 +335,7 @@
   }
 
   #content {
-    margin-top: 25px;
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #ffdf80;
-    text-shadow: 0 0 6px black;
+    display: none; /* nebenaudojam apačioj tekstui */
   }
 
   .hidden { display: none; }
@@ -376,9 +354,13 @@
 </head>
 <body>
 
+<!-- Muzika -->
 <audio id="bg-music">
-  <source src="https://raw.githubusercontent.com/sultryblue/adventas/main/Justinas Jarutis - Kalėdos ištinka (mp3cut.net).mp3" type="audio/mpeg">
+  <source src="https://raw.githubusercontent.com/sultryblue/adventas/main/daina.mp3" type="audio/mpeg">
 </audio>
+
+<!-- Canvas konfeti sluoksnis -->
+<canvas id="confettiCanvas"></canvas>
 
 <div class="progress-wrapper">
   <img src="https://raw.githubusercontent.com/sultryblue/adventas/main/foton.PNG"
@@ -388,152 +370,4 @@
     <div class="progress-fill-wrapper" id="progressFillWrapper">
       <div class="progress-candy"></div>
     </div>
-  </div>
-
-  <div class="progress-text" id="progressText"></div>
-</div>
-
-<div id="giftWrapper" class="gift-wrapper">
-  <div id="giftBox" class="gift" onclick="openGift()">
-    <div class="gift-lid">
-      <div class="bow-left"></div>
-      <div class="bow-right"></div>
-      <div class="bow-knot"></div>
-    </div>
-    <div class="gift-box-body">
-      <div class="vertical-band"></div>
-      <div class="day-number" id="dayNumber"></div>
-    </div>
-    <div id="giftMessage" class="gift-message"></div>
-  </div>
-
-  <div id="giftHint" class="hint">
-    <div class="hint-text">Paspausk</div>
-    <div class="hint-arrow"></div>
-  </div>
-</div>
-
-<!-- Apačios blokas paliktas, bet mes jo nebeužpildom tekstu -->
-<div id="content" class="hidden"></div>
-
-<script>
-/* --- DIENOS NUMERIS ANT DĖŽUTĖS --- */
-const today = new Date();
-const day = today.getDate();
-document.getElementById("dayNumber").textContent = day;
-
-/* --- ADVENTO ŽINUTĖS --- */
-const messages = {
-  1: { text: "✨ Gruodžio 1! Prasideda mūsų GIS advento kelionė!" },
-  2: { text: "❄️ Gruodžio 2! Šiandien pasileisk kokią kalėdinę dainą dirbdama(s)." },
-  3: { text: "🎶 Gruodžio 3! Maža pertraukėlė su šia daina 🙂" }
-};
-
-let todaysHtml;
-if (messages[day]) {
-  todaysHtml = messages[day].text;
-} else {
-  todaysHtml = "❄️ Advento kalendorius atsidaro tik gruodį!";
-}
-
-/* --- PROGRESO JUOSTA --- */
-const adventEnd = new Date(today.getFullYear(), 11, 24);
-let progressPercent = 0;
-
-if (today.getMonth() + 1 === 12) {
-  progressPercent = Math.min((day / 24) * 100, 100);
-}
-
-const progressFillWrapper = document.getElementById("progressFillWrapper");
-progressFillWrapper.style.width = progressPercent + "%";
-
-let daysUntil = Math.max(0, Math.ceil((adventEnd - today) / 86400000));
-const progressTextEl = document.getElementById("progressText");
-
-if (daysUntil === 0) {
-  progressTextEl.textContent = "Šiandien Kalėdos! 🎄";
-} else {
-  progressTextEl.textContent =
-    `Iki Kalėdų liko ${daysUntil} dienų – ${day} diena iš 24`;
-}
-
-/* --- DOVANĖLĖS ATIDARYMAS --- */
-let opened = false;
-
-function openGift() {
-  if (opened) return;
-  opened = true;
-
-  const box = document.getElementById("giftBox");
-  const audio = document.getElementById("bg-music");
-  const message = document.getElementById("giftMessage");
-  const hint = document.getElementById("giftHint");
-  const wrapper = document.getElementById("giftWrapper");
-
-  // purtymas
-  box.classList.add("shake");
-
-  // paslepiam hintą
-  if (hint) {
-    hint.style.opacity = "0";
-    setTimeout(() => { hint.style.display = "none"; }, 400);
-  }
-
-  // muzika
-  audio.play().catch(() => {});
-
-  // žinutė virš dėžės
-  message.textContent = todaysHtml;
-
-  // konfeti – daug, atsitiktomos kryptys
-  for (let i = 0; i < 80; i++) {
-    dropConfetti();
-  }
-
-  setTimeout(() => {
-    box.classList.remove("shake");
-    box.classList.add("opened");
-    wrapper.classList.add("opened");
-    // apačios teksto neberodom – tik virš dėžės
-  }, 450);
-}
-
-/* --- KONFETI FUNKCIJA su atsitiktinėmis trajektorijomis --- */
-function dropConfetti() {
-  const box = document.getElementById("giftBox");
-  const rect = box.getBoundingClientRect();
-
-  const confetti = document.createElement("div");
-  confetti.classList.add("confetti");
-
-  const colors = ["#ffdf80", "#b30000", "#ffffff", "#ffb700"];
-  confetti.style.backgroundColor =
-    colors[Math.floor(Math.random() * colors.length)];
-
-  // pradinė pozicija – dėžutės vidurys ekrane
-  const startX = rect.left + rect.width / 2;
-  const startY = rect.top + rect.height / 2;
-  confetti.style.left = startX + "px";
-  confetti.style.top = startY + "px";
-
-  // atsitiktinė kryptis: daugiausia į viršų ir į šonus
-  // dx: nuo -160 iki 160
-  const dx = (Math.random() * 2 - 1) * 160;
-  // dy: nuo -220 iki -60 (aukštyn)
-  const dy = -220 + Math.random() * 160;
-
-  confetti.style.setProperty("--dx", dx.toFixed(1) + "px");
-  confetti.style.setProperty("--dy", dy.toFixed(1) + "px");
-
-  // atsitiktinė trukmė
-  confetti.style.animationDuration =
-    (1 + Math.random() * 0.7).toFixed(2) + "s";
-
-  document.body.appendChild(confetti);
-
-  confetti.addEventListener("animationend", () => confetti.remove());
-}
-</script>
-
-</body>
-</html>
+  </d
