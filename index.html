@@ -136,7 +136,7 @@ body {
   transform: translateX(-50%);
   border-left: 5px solid #7a1313;
   border-right: 5px solid #7a1313;
-  background: linear-gradient(to bottom, #f7e18a 0%, #d4af37 50%, #a6791a 100%);
+  background: solid #0b2e13;
 }
 
 /* Dangtis – 30% aukščio, 110% pločio, ant viršaus */
@@ -219,9 +219,9 @@ body {
 .gift-message {
   position: absolute;
   left: 50%;
-  bottom: 100%;                        /* vietoj top:-40px — prisiriša prie dangčio apačios */
-  transform: translateX(-50%) translateY(-10px);
+  top: -40px;
   width: 240px;
+  transform: translate(-50%, 0);
   font-size: 0.95rem;
   font-weight: 600;
   color: #ffdf80;
@@ -230,12 +230,11 @@ body {
   pointer-events: none;
   transition: opacity 0.6s ease, transform 0.6s ease;
   z-index: 5;
-  text-align: center;
 }
 
 .gift.opened .gift-message {
   opacity: 1;
-  transform: translateX(-50%) translateY(-4px);
+  transform: translate(-50%, 6px);
 }
 
 /* Purtymas */
