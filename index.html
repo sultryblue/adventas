@@ -10,9 +10,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
+  /* Fono pataisymas – gradientas nesikartoja */
+  html, body {
+    height: 100%;
+  }
+
   body {
     font-family: "Poppins", sans-serif;
-    background: linear-gradient(#0b2e13, #145c1f);
+    background: linear-gradient(to bottom, #0b2e13, #145c1f);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     text-align: center;
     padding: 5px 10px 40px;
     color: #fff;
@@ -93,9 +100,15 @@
   .gift-wrapper {
     margin-top: 25px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;      /* rodyklė sone */
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 18px;
+    transition: margin-top 0.6s ease;
+  }
+
+  .gift-wrapper.opened {
+    margin-top: 60px; /* kai atsidaro, viskas nuslenka žemyn */
   }
 
   .gift {
@@ -224,12 +237,12 @@
     transform: translateX(-50%) scale(0.9);
   }
 
-  /* Žinutė tarp dangčio ir dėžės */
+  /* Žinutė – aukščiau, kad nesidengtų, bet vis dar prie dėžutės */
   .gift-message {
     position: absolute;
     left: 50%;
-    top: 34px;
-    width: 180px;
+    top: -10px; /* virš dangčio */
+    width: 200px;
     transform: translate(-50%, 0);
     font-size: 0.9rem;
     font-weight: 600;
@@ -238,12 +251,12 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.6s ease, transform 0.6s ease;
-    z-index: 2;
+    z-index: 5;
   }
 
   .gift.opened .gift-message {
     opacity: 1;
-    transform: translate(-50%, 8px);
+    transform: translate(-50%, 4px);
   }
 
   /* Purtymas */
@@ -263,11 +276,11 @@
 
   .confetti {
     position: absolute;
-    width: 6px;
-    height: 10px;
+    width: 5px;
+    height: 9px;
     opacity: 0;
     border-radius: 2px;
-    top: 40px; /* maždaug per tarpą tarp dangčio ir dėžės */
+    top: 40px; /* maždaug ties „tarpeliu“ */
     left: 50%;
     transform: translateX(-50%) rotate(0deg);
     pointer-events: none;
@@ -290,7 +303,7 @@
     }
   }
 
-  /* Rodyklė "Paspausk" */
+  /* Rodyklė "Paspausk" – šone */
 
   .hint {
     display: flex;
@@ -314,29 +327,30 @@
     height: 30px;
   }
 
+  /* Lenkta rodyklė, rodanti į dėžutę */
   .hint-arrow::before {
     content: "";
     position: absolute;
-    left: 0;
+    right: 0;
     top: 6px;
     width: 24px;
     height: 24px;
     border-radius: 50%;
     border: 2px solid #ffdf80;
     border-color: transparent transparent #ffdf80 #ffdf80;
-    transform: rotate(30deg);
+    transform: rotate(-30deg); /* nukreipta į kairę, link dėžutės */
   }
 
   .hint-arrow::after {
     content: "";
     position: absolute;
-    right: 0;
+    left: 0;
     bottom: 6px;
     width: 8px;
     height: 8px;
-    border-right: 2px solid #ffdf80;
+    border-left: 2px solid #ffdf80;
     border-bottom: 2px solid #ffdf80;
-    transform: translate(2px, 2px) rotate(35deg);
+    transform: translate(-2px, 2px) rotate(35deg);
   }
 
   #content {
@@ -348,6 +362,18 @@
   }
 
   .hidden { display: none; }
+
+  /* Šiek tiek prisitaikymo mažiems ekranams */
+  @media (max-width: 480px) {
+    .gift-wrapper {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .gift-wrapper.opened {
+      margin-top: 40px;
+    }
+  }
 
 </style>
 </head>
@@ -373,7 +399,7 @@
 </div>
 
 <!-- DOVANŲ DĖŽUTĖ + RODYKLĖ -->
-<div class="gift-wrapper">
+<div id="giftWrapper" class="gift-wrapper">
   <div id="giftBox" class="gift" onclick="openGift()">
     <div class="gift-lid">
       <div class="bow-left"></div>
@@ -388,8 +414,8 @@
   </div>
 
   <div id="giftHint" class="hint">
-    <div class="hint-arrow"></div>
     <div class="hint-text">Paspausk</div>
+    <div class="hint-arrow"></div>
   </div>
 </div>
 
@@ -444,11 +470,11 @@ function openGift() {
   opened = true;
 
   const box = document.getElementById("giftBox");
-  const number = document.getElementById("dayNumber");
   const content = document.getElementById("content");
   const audio = document.getElementById("bg-music");
   const message = document.getElementById("giftMessage");
   const hint = document.getElementById("giftHint");
+  const wrapper = document.getElementById("giftWrapper");
 
   // purtymas
   box.classList.add("shake");
@@ -459,22 +485,22 @@ function openGift() {
     setTimeout(() => { hint.style.display = "none"; }, 400);
   }
 
-  // muzika
+  // foninė muzika
   audio.play().catch(() => {});
 
-  // įdedam žinutę tarp dangčio ir dėžutės
+  // įdedam žinutę prie dėžutės ir apačioje
   message.textContent = todaysHtml;
 
   // konfeti – daugiau ir smulkesni
-  for (let i = 0; i < 80; i++) {
+  for (let i = 0; i < 90; i++) {
     dropConfetti();
   }
 
-  // po purtymo atidarom dangtį ir rodom žinutę
+  // po purtymo atidarom dangtį ir nuleidžiam visą bloką žemyn
   setTimeout(() => {
     box.classList.remove("shake");
     box.classList.add("opened");
-    // didesnė žinutė apačioje (jei norėsi)
+    wrapper.classList.add("opened");
     content.textContent = todaysHtml;
     content.classList.remove("hidden");
   }, 450);
@@ -492,8 +518,8 @@ function dropConfetti() {
     colors[Math.floor(Math.random() * colors.length)];
 
   // daugiau į šonus ir viršų:
-  // x: -140 iki 140
-  const x = (Math.random() * 2 - 1) * 140;
+  // x: -150 iki 150
+  const x = (Math.random() * 2 - 1) * 150;
 
   // y: daugiausia į viršų (neigiami), bet šiek tiek ir žemyn
   // nuo -260 iki 60
