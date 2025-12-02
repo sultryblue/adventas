@@ -274,52 +274,31 @@
     80% { transform: translateX(4px); }
   }
 
-  /* KONFETI – be CSS kintamųjų, su keliomis skirtingomis trajektorijomis */
+  /* KONFETI – atsitiktinės kryptys su CSS kintamaisiais */
 
   .confetti {
-    position: fixed;  /* kad tikrai matytųsi virš visko */
+    position: fixed;
     width: 6px;
     height: 10px;
     border-radius: 2px;
     opacity: 0;
     pointer-events: none;
-    animation-duration: 1.3s;
+    animation-name: burst;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
     z-index: 999;
   }
 
-  @keyframes burst1 {
-    0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-    100% { opacity: 0; transform: translate(-60px, -160px) rotate(720deg); }
+  @keyframes burst {
+    0% {
+      opacity: 1;
+      transform: translate(0, 0) rotate(0deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--dx), var(--dy)) rotate(900deg);
+    }
   }
-  @keyframes burst2 {
-    0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-    100% { opacity: 0; transform: translate(40px, -190px) rotate(720deg); }
-  }
-  @keyframes burst3 {
-    0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-    100% { opacity: 0; transform: translate(-30px, -120px) rotate(900deg); }
-  }
-  @keyframes burst4 {
-    0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-    100% { opacity: 0; transform: translate(80px, -140px) rotate(900deg); }
-  }
-  @keyframes burst5 {
-    0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-    100% { opacity: 0; transform: translate(-90px, -190px) rotate(1080deg); }
-  }
-  @keyframes burst6 {
-    0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-    100% { opacity: 0; transform: translate(60px, -110px) rotate(1080deg); }
-  }
-
-  .confetti.type1 { animation-name: burst1; }
-  .confetti.type2 { animation-name: burst2; }
-  .confetti.type3 { animation-name: burst3; }
-  .confetti.type4 { animation-name: burst4; }
-  .confetti.type5 { animation-name: burst5; }
-  .confetti.type6 { animation-name: burst6; }
 
   /* Rodyklė "Paspausk" – šone, dėžė centre */
 
@@ -383,7 +362,6 @@
 
   .hidden { display: none; }
 
-  /* Mobilui – rodyklę nuleidžiam žemyn, jei labai siauras ekranas */
   @media (max-width: 480px) {
     .hint {
       position: static;
@@ -435,7 +413,8 @@
   </div>
 </div>
 
-<div id="content" class="hidden">Kraunama...</div>
+<!-- Apačios blokas paliktas, bet mes jo nebeužpildom tekstu -->
+<div id="content" class="hidden"></div>
 
 <script>
 /* --- DIENOS NUMERIS ANT DĖŽUTĖS --- */
@@ -486,7 +465,6 @@ function openGift() {
   opened = true;
 
   const box = document.getElementById("giftBox");
-  const content = document.getElementById("content");
   const audio = document.getElementById("bg-music");
   const message = document.getElementById("giftMessage");
   const hint = document.getElementById("giftHint");
@@ -504,11 +482,11 @@ function openGift() {
   // muzika
   audio.play().catch(() => {});
 
-  // žinutė virš dėžės ir apačioje
+  // žinutė virš dėžės
   message.textContent = todaysHtml;
 
-  // konfeti
-  for (let i = 0; i < 70; i++) {
+  // konfeti – daug, atsitiktomos kryptys
+  for (let i = 0; i < 80; i++) {
     dropConfetti();
   }
 
@@ -516,12 +494,11 @@ function openGift() {
     box.classList.remove("shake");
     box.classList.add("opened");
     wrapper.classList.add("opened");
-    content.textContent = todaysHtml;
-    content.classList.remove("hidden");
+    // apačios teksto neberodom – tik virš dėžės
   }, 450);
 }
 
-/* --- KONFETI FUNKCIJA (naudojam kelis fiksuotus keyframes) --- */
+/* --- KONFETI FUNKCIJA su atsitiktinėmis trajektorijomis --- */
 function dropConfetti() {
   const box = document.getElementById("giftBox");
   const rect = box.getBoundingClientRect();
@@ -539,13 +516,18 @@ function dropConfetti() {
   confetti.style.left = startX + "px";
   confetti.style.top = startY + "px";
 
-  // atsitiktinė trajektorija iš 6 variantų
-  const type = Math.floor(Math.random() * 6) + 1;
-  confetti.classList.add("type" + type);
+  // atsitiktinė kryptis: daugiausia į viršų ir į šonus
+  // dx: nuo -160 iki 160
+  const dx = (Math.random() * 2 - 1) * 160;
+  // dy: nuo -220 iki -60 (aukštyn)
+  const dy = -220 + Math.random() * 160;
+
+  confetti.style.setProperty("--dx", dx.toFixed(1) + "px");
+  confetti.style.setProperty("--dy", dy.toFixed(1) + "px");
 
   // atsitiktinė trukmė
   confetti.style.animationDuration =
-    (1 + Math.random() * 0.6).toFixed(2) + "s";
+    (1 + Math.random() * 0.7).toFixed(2) + "s";
 
   document.body.appendChild(confetti);
 
