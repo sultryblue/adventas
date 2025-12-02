@@ -387,7 +387,7 @@
 </div>
 
 <div id="giftWrapper" class="gift-wrapper">
-  <div id="giftBox" class="gift" onclick="openGift()">
+  <div id="giftBox" class="gift" onclick="toggleGift()">
     <div class="gift-lid">
       <div class="bow-left"></div>
       <div class="bow-right"></div>
@@ -453,32 +453,43 @@ if (daysUntil === 0) {
 /* --- DOVANĖLĖS ATIDARYMAS --- */
 let opened = false;
 
-function openGift() {
-  if (opened) return;
-  opened = true;
-
+function toggleGift() {
   const box = document.getElementById("giftBox");
-  const audio = document.getElementById("bg-music");
+  const wrapper = document.getElementById("giftWrapper");
   const message = document.getElementById("giftMessage");
   const hint = document.getElementById("giftHint");
-  const wrapper = document.getElementById("giftWrapper");
+  const audio = document.getElementById("bg-music");
 
-  // purtymas
+  // JEI ATIDARYTA → UŽDARYTI
+  if (opened) {
+    box.classList.remove("opened");
+    wrapper.classList.remove("opened");
+    message.style.opacity = "0";
+    message.style.transform = "translate(-50%, -10px)";
+
+    opened = false;
+    return;
+  }
+
+  // JEI UŽDARYTA → ATIDARYTI
+  opened = true;
+
+  // Purtymas
   box.classList.add("shake");
 
-  // paslepiam hintą
-  if (hint) {
+  // Muzika
+  audio.play().catch(() => {});
+
+  // Paslepiam hintą tik pirmą kartą
+  if (hint && hint.style.display !== "none") {
     hint.style.opacity = "0";
     setTimeout(() => { hint.style.display = "none"; }, 400);
   }
 
-  // muzika
-  audio.play().catch(() => {});
-
-  // žinutė virš dėžės
+  // Žinutė
   message.textContent = todaysHtml;
 
-  // konfeti – daug, atsitiktomos kryptys
+  // Konfeti
   for (let i = 0; i < 80; i++) {
     dropConfetti();
   }
@@ -487,7 +498,6 @@ function openGift() {
     box.classList.remove("shake");
     box.classList.add("opened");
     wrapper.classList.add("opened");
-    // apačios teksto neberodom – tik virš dėžės
   }, 450);
 }
 
