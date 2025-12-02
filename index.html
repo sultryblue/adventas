@@ -400,6 +400,22 @@ const today = new Date();
 const day = today.getDate();
 document.getElementById("dayNumber").textContent = day;
 
+ /* ---DIENU ---*/ 
+function getDaysWordLT(n) {
+  // 21 ir 1 – "diena"
+  if (n === 1 || n === 21) {
+    return "diena";
+  }
+
+  // 23, 22, 9–2 – "dienos"
+  if ([23, 22, 9, 8, 7, 6, 5, 4, 3, 2].includes(n)) {
+    return "dienos";
+  }
+
+  // 20–10, 19–11 ir visi kiti – "dienų"
+  return "dienų";
+}
+
 /* --- ADVENTO ŽINUTĖS --- */
 const messages = {
   1: { text: "✨ Gruodžio 1! Prasideda mūsų GIS advento kelionė!" },
@@ -431,8 +447,9 @@ const progressTextEl = document.getElementById("progressText");
 if (daysUntil === 0) {
   progressTextEl.textContent = "Šiandien Kalėdos! 🎄";
 } else {
+  const word = getDaysWordLT(daysUntil);
   progressTextEl.textContent =
-    `Iki Kalėdų liko ${daysUntil} dienų!`;
+    `Iki Kalėdų liko ${daysUntil} ${word}!`;
 }
 
 /* --- DOVANĖLĖS ATIDARYMAS/UŽDARYMAS --- */
