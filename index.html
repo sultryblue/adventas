@@ -14,10 +14,12 @@
     font-family: "Poppins", sans-serif;
     background: linear-gradient(#0b2e13, #145c1f);
     text-align: center;
-    padding: 2px 10px 40px 10px;
+    padding: 5px 10px 40px;
     color: #fff;
     margin: 0;
   }
+
+  /* ---- VIRŠUTINĖ NUOTRAUKA + PROGRESS ---- */
 
   .progress-wrapper {
     max-width: 700px;
@@ -28,55 +30,66 @@
     width: 45%;
     display: block;
     margin: 0 auto;
+    border-radius: 8px;
   }
 
+  /* ---- TVARKINGA, VIENTISA CANDY-CANE JUOSTA ---- */
+
   .progress-bar {
-    margin: 10px auto 0 auto;
     width: 80%;
     height: 30px;
+    margin: 15px auto 0;
+    background: rgba(0,0,0,0.35);
     border-radius: 15px;
-    background: rgba(0, 0, 0, 0.6);
-    overflow: hidden;
     border: 2px solid #b30000;
+    overflow: hidden;
+    position: relative;
   }
 
   .progress-fill {
     height: 100%;
     width: 0%;
-    background: repeating-linear-gradient(45deg, #b30000 0px, #b30000 12px, #ffffff 12px, #ffffff 24px);
-    background-size: 40px 40px;
-    animation: candyMove 1s linear infinite;
-    transition: width 0.8s ease-out;
+    background: repeating-linear-gradient(
+      45deg,
+      #b30000,
+      #b30000 20px,
+      #ffffff 20px,
+      #ffffff 40px
+    );
+    animation: moveCandy 1.4s linear infinite;
+    transition: width 0.7s ease-out;
   }
 
-  @keyframes candyMove {
+  @keyframes moveCandy {
     from { background-position: 0 0; }
-    to { background-position: 40px 0; }
+    to   { background-position: 80px 0; }
   }
 
   .progress-text {
-    margin-top: 20px;
+    margin-top: 15px;
     font-weight: 700;
     color: #ffdf80;
     font-size: 1.2rem;
+    text-shadow: 1px 1px 3px black;
   }
 
-  /* DOVANĖLĖ */
+  /* ---- 3D DOVANĖLĖ ---- */
+
   .gift-box {
     position: relative;
-    width: 160px;
-    height: 130px;
-    margin: 20px auto 0 auto;
+    width: 180px;
+    height: 150px;
+    margin: 25px auto 0;
     cursor: pointer;
+    perspective: 900px;
   }
 
-  /* Purtymo animacija */
   .shake {
-    animation: shakeBox 0.5s ease-in-out;
+    animation: wobble 0.45s ease-in-out;
   }
 
-  @keyframes shakeBox {
-    0%, 100% { transform: translateX(0); }
+  @keyframes wobble {
+    0%,100% { transform: translateX(0); }
     20% { transform: translateX(-6px); }
     40% { transform: translateX(6px); }
     60% { transform: translateX(-4px); }
@@ -87,109 +100,119 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 75px;
-    background: linear-gradient(#b30000, #700000);
-    border-radius: 0 0 8px 8px;
+    height: 95px;
+    background: linear-gradient(145deg, #b30000, #6e0000);
+    border-radius: 0 0 12px 12px;
+    box-shadow:
+      0 4px 8px rgba(0,0,0,0.4),
+      inset 0 4px 8px rgba(255,255,255,0.12);
   }
 
+  .ribbon-vertical {
+    position: absolute;
+    left: 50%;
+    width: 22px;
+    height: 100%;
+    transform: translateX(-50%);
+    background: linear-gradient(#ffe08a, #d5b25c);
+    border-radius: 4px;
+  }
+
+  .ribbon-horizontal {
+    position: absolute;
+    top: 38px;
+    height: 18px;
+    width: 100%;
+    background: linear-gradient(#ffe08a, #d5b25c);
+    border-radius: 4px;
+  }
+
+  /* --- DANGTIS 3D --- */
   .gift-lid {
     position: absolute;
     top: 0;
-    left: -5px;
-    width: calc(100% + 10px);
-    height: 40px;
-    background: linear-gradient(#d01010, #b30000);
-    border-radius: 8px 8px 4px 4px;
+    width: calc(100% + 18px);
+    height: 55px;
+    left: -9px;
+    background: linear-gradient(145deg, #d80000, #820000);
+    border-radius: 10px 10px 6px 6px;
+    transform-origin: bottom center;
+    box-shadow:
+      0 4px 8px rgba(0,0,0,0.4),
+      inset 0 4px 8px rgba(255,255,255,0.15);
     z-index: 5;
   }
 
-  /* Bantukas ant viršaus */
-  .bow {
+  .lid-open {
+    animation: openLid 1s forwards cubic-bezier(.45,-0.03,.52,1.45);
+  }
+
+  @keyframes openLid {
+    0% { transform: rotateX(0deg); }
+    100% { transform: rotateX(70deg) translateY(-20px); }
+  }
+
+  /* --- 3D BANTUKAS --- */
+
+  .bow-top,
+  .bow-left,
+  .bow-right {
     position: absolute;
-    top: -18px;
+    width: 38px;
+    height: 22px;
+    background: #ffe08a;
+    border-radius: 50%;
+    top: -12px;
+  }
+
+  .bow-top {
     left: 50%;
     transform: translateX(-50%);
-    width: 50px;
-    height: 30px;
-    background: #ffdf80;
-    border-radius: 50%;
-    box-shadow: 0 0 6px rgba(0,0,0,0.4);
   }
 
-  .bow::before, .bow::after {
-    content: "";
-    position: absolute;
-    width: 35px;
-    height: 25px;
-    background: #ffdf80;
-    border-radius: 50%;
+  .bow-left {
+    left: 18px;
+    transform: rotate(-25deg);
   }
 
-  .bow::before { left: -32px; transform: rotate(-20deg); }
-  .bow::after { right: -32px; transform: rotate(20deg); }
-
-  /* Vertikalus kaspinas */
-  .gift-ribbon-vertical {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 18px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(#ffdf80, #ffc040);
+  .bow-right {
+    right: 18px;
+    transform: rotate(25deg);
   }
 
-  /* Horizontalus kaspinas */
-  .gift-ribbon-horizontal {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 16px;
-    top: 38px;
-    background: linear-gradient(#ffdf80, #ffc040);
-  }
+  /* --- DIENOS NUMERIS --- */
 
-  /* Dienos skaičius ant dovanėlės */
   .day-number {
     position: absolute;
-    top: 55px;
+    top: 65px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 700;
-    color: #ffdf80;
-    text-shadow: 0 0 6px black;
+    color: #ffe08a;
+    text-shadow: 0 0 7px black;
     z-index: 10;
   }
 
-  /* Dangčio pakėlimo animacija */
-  .lid-open {
-    animation: liftLid 0.8s forwards ease-out;
-  }
+  /* --- KONFETI ---- */
 
-  @keyframes liftLid {
-    0% { transform: translateY(0) rotate(0); }
-    40% { transform: translateY(-25px) rotate(-4deg); }
-    100% { transform: translateY(-60px) rotate(-10deg); }
-  }
-
-  /* Konfeti */
   .confetti {
     position: fixed;
-    top: -10px;
     width: 12px;
     height: 12px;
     opacity: 0.9;
     border-radius: 2px;
-    animation: fall linear forwards;
+    animation: fallInside linear forwards;
+    pointer-events: none;
   }
 
-  @keyframes fall {
+  @keyframes fallInside {
     to {
-      transform: translateY(110vh) rotate(360deg);
-      opacity: 1;
+      transform: translateY(90vh) rotate(360deg);
     }
   }
+
+  /* --- Žinutė --- */
 
   #content {
     margin-top: 25px;
@@ -200,7 +223,6 @@
   }
 
   .hidden { display: none; }
-
 </style>
 </head>
 <body>
@@ -211,8 +233,9 @@
 </audio>
 
 <div class="progress-wrapper">
+
   <img src="https://raw.githubusercontent.com/sultryblue/adventas/main/foton.PNG"
-       class="top-photo" alt="Viršutinė nuotrauka">
+       class="top-photo">
 
   <div class="progress-bar">
     <div class="progress-fill" id="progressFill"></div>
@@ -221,96 +244,99 @@
   <div class="progress-text" id="progressText"></div>
 </div>
 
-<!-- DOVANĖLĖ -->
+<!-- 3D DOVANĖLĖ -->
 <div id="giftBox" class="gift-box" onclick="openGift()">
-  <div class="gift-lid" id="giftLid"></div>
-  <div class="bow"></div>
-  <div class="gift-body"></div>
-  <div class="gift-ribbon-vertical"></div>
-  <div class="gift-ribbon-horizontal"></div>
+
+  <div class="gift-lid" id="giftLid">
+    <div class="bow-top"></div>
+    <div class="bow-left"></div>
+    <div class="bow-right"></div>
+  </div>
+
+  <div class="gift-body">
+    <div class="ribbon-vertical"></div>
+    <div class="ribbon-horizontal"></div>
+  </div>
+
   <div class="day-number" id="dayNumber"></div>
 </div>
-
-<div class="gift-text">Atidaryk šiandienos staigmeną 🎁</div>
 
 <div id="content" class="hidden">Kraunama...</div>
 
 <script>
-/* Nustatome dienos numerį */
+/* --- DIENOS NUMERIS --- */
 const today = new Date();
 const day = today.getDate();
 document.getElementById("dayNumber").textContent = day;
 
-/* Advento žinutės */
+/* --- ADVENTO ŽINUTĖS --- */
 const messages = {
-  1: { text: "✨ Gruodžio 1! Prasideda mūsų GIS advento kelionė!" },
-  2: { text: "❄️ Gruodžio 2! Šiandien pasileisk kokią kalėdinę dainą dirbdama(s)." },
-  3: { text: "🎶 Gruodžio 3! Maža pertraukėlė su šia daina? 🙂" }
+  1:{text:"✨ Gruodžio 1! Prasideda mūsų GIS advento kelionė!"},
+  2:{text:"❄️ Gruodžio 2! Šiandien pasileisk kokią kalėdinę dainą dirbdama(s)."},
+  3:{text:"🎶 Gruodžio 3! Maža pertraukėlė su šia daina 🙂"}
 };
 
-let todaysHtml = messages[day]
-  ? messages[day].text
-  : "❄️ Advento kalendorius atsidaro tik gruodį!";
+let todaysHtml = messages[day]?.text ?? "❄️ Advento kalendorius atsidaro tik gruodį!";
 
-/* Progreso juosta */
+/* --- PROGRESO JUOSTA --- */
 const adventEnd = new Date(today.getFullYear(), 11, 24);
-let progressPercent = (today.getMonth() + 1 === 12)
-  ? Math.min((day / 24) * 100, 100)
+let progressPercent = today.getMonth()+1 === 12
+  ? Math.min((day/24)*100, 100)
   : 0;
 
 document.getElementById("progressFill").style.width = progressPercent + "%";
 
-let daysUntil = Math.max(0, Math.ceil((adventEnd - today) / 86400000));
+let daysUntil = Math.max(0, Math.ceil((adventEnd - today)/86400000));
+
 document.getElementById("progressText").textContent =
   daysUntil === 0
     ? "Šiandien Kalėdos! 🎄"
-    : `Iki Kalėdų liko ${daysUntil} dienų! – ${day} diena iš 24`;
+    : `Iki Kalėdų liko ${daysUntil} dienų – ${day} diena iš 24`;
 
-/* Dovanėlės atidarymas + animacijos */
+/* --- ATIDARYMAS --- */
 function openGift() {
-  const gift = document.getElementById("giftBox");
+  const box = document.getElementById("giftBox");
   const lid = document.getElementById("giftLid");
   const number = document.getElementById("dayNumber");
   const content = document.getElementById("content");
   const audio = document.getElementById("bg-music");
 
-  // Purtytis
-  gift.classList.add("shake");
+  box.classList.add("shake");
 
-  // Po purtymo – pakyla dangtis
   setTimeout(() => {
     lid.classList.add("lid-open");
-    number.style.display = "none"; // paslepiam dienos numerį
-  }, 400);
+    number.style.display = "none";
+  }, 380);
 
-  // Grojam muziką
-  audio.play().catch(() => {});
+  audio.play().catch(()=>{});
 
-  // Po 1s dingsta dėžutė, atsiranda žinutė
   setTimeout(() => {
-    gift.style.display = "none";
+    box.style.display = "none";
     content.textContent = todaysHtml;
     content.classList.remove("hidden");
   }, 1000);
 
-  // Konfeti
-  for (let i = 0; i < 45; i++) createConfetti();
+  for (let i = 0; i < 40; i++) dropConfetti();
 }
 
-/* Konfeti funkcija */
-function createConfetti() {
+/* --- KONFETI IŠ DĖŽĖS VIDAUS --- */
+function dropConfetti() {
+  const box = document.getElementById("giftBox");
+  const rect = box.getBoundingClientRect();
+
   const confetti = document.createElement("div");
   confetti.classList.add("confetti");
-  confetti.style.left = Math.random() * 100 + "vw";
 
-  const colors = ["#ffdf80", "#b30000", "#ffffff", "#ffd700"];
-  confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+  confetti.style.left = rect.left + rect.width/2 + "px";
+  confetti.style.top = rect.top + rect.height/1.8 + "px";
 
-  confetti.style.animationDuration = (1.5 + Math.random() * 1.5) + "s";
+  const colors = ["#ffdf80","#b30000","#ffffff","#ffb700"];
+  confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+
+  confetti.style.animationDuration = (1.2 + Math.random()*1.4) + "s";
 
   document.body.appendChild(confetti);
-
-  confetti.addEventListener("animationend", () => confetti.remove());
+  confetti.addEventListener("animationend", ()=>confetti.remove());
 }
 </script>
 
