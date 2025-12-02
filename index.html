@@ -48,7 +48,7 @@
 
   .progress-fill-wrapper {
     position: absolute;
-    left: -3;
+    left: 0;
     top: 0;
     bottom: 0;
     width: 0%;
@@ -59,7 +59,7 @@
 
   .progress-candy {
     position: absolute;
-    left: -3;
+    left: 1px;
     top: 0;
     width: 200%;
     height: 100%;
@@ -85,7 +85,7 @@
     text-shadow: 1px 1px 3px black;
   }
 
-  /* ---- GRAŽI „GIFT“ DĖŽUTĖ (pagal tavo pavyzdį) ---- */
+  /* ---- DOVANŲ DĖŽUTĖ ---- */
 
   .gift {
     position: relative;
@@ -145,16 +145,18 @@
       0px 20px 40px -18px rgba(0,0,0,0.25),
       0px -20px 15px -10px rgba(0,0,0,0.2);
     cursor: pointer;
+    overflow: visible; /* kad bantukas ir konfeti nebūtų nukirpti */
   }
 
-  .gift::before {
+  /* Bantuko "ausys" – dabar arčiau dėžutės ir nebe už jos */
+  .gift::before,
+  .gift::after {
     content: '';
     position: absolute;
-    top: -105px;
-    left: -20px;
+    top: -40px;
     width: 32px;
     height: 40px;
-    border-radius: 10px 5px 0px 0px;
+    border-radius: 10px 10px 0 0;
     box-shadow: inset -4px 5px 10px rgba(255,255,255,0.5);
     background: 
       linear-gradient(
@@ -169,36 +171,17 @@
     background-size: 32px 40px;
     background-position: 0px 0px;
     background-repeat: no-repeat;
-    transform: rotateZ(-30deg) scale(0.8, 1);
-    z-index: -1;
+    z-index: 2;
+  }
+
+  .gift::before {
+    left: 18px;
+    transform: rotateZ(-20deg) scale(0.8, 1);
   }
 
   .gift::after {
-    content: '';
-    position: absolute;
-    top: -90px;
-    right: -20px;
-    width: 32px;
-    height: 40px;
-    border-radius: 5px 10px 0px 0px;
-    box-shadow: 
-      inset -5px 5px 10px rgba(255,255,255,0.5),
-      0 0 20px rgba(0,0,0,0.5);
-    background: 
-      linear-gradient(
-        to right,
-        transparent 0px, #FF0000 0px,
-        #FF0000 2px, #FFFF00 2px,
-        #FFFF00 4px, #FF0000 4px,
-        #FF0000 28px, #FFFF00 28px,
-        #FFFF00 30px, #FF0000 30px,
-        #FF0000 32px, transparent 32px
-      );
-    background-size: 32px 40px;
-    background-position: 0px 0px;
-    background-repeat: no-repeat;
-    transform: rotateZ(25deg) scale(0.75, 1);
-    z-index: -1;
+    right: 18px;
+    transform: rotateZ(20deg) scale(0.8, 1);
   }
 
   /* Purtymas */
@@ -226,20 +209,33 @@
     text-shadow: 0 0 6px black;
   }
 
-  /* Konfeti */
+  /* Konfeti – sproginėjantys iš dėžutės */
   .confetti {
-    position: fixed;
-    width: 12px;
-    height: 12px;
-    opacity: 0.9;
+    position: absolute; /* reliatyviai prie .gift */
+    width: 10px;
+    height: 14px;
+    opacity: 0;
     border-radius: 2px;
-    animation: fallInside linear forwards;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
     pointer-events: none;
+    animation: burst 1.6s ease-out forwards;
   }
 
-  @keyframes fallInside {
-    to {
-      transform: translateY(90vh) rotate(360deg);
+  @keyframes burst {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      opacity: 0;
+      transform:
+        translate(
+          calc(-50% + (var(--x) * 1px)),
+          calc(-50% + (var(--y) * 1px))
+        )
+        rotate(720deg);
     }
   }
 
@@ -276,7 +272,7 @@
   <div class="progress-text" id="progressText"></div>
 </div>
 
-<!-- DOVANŲ DĖŽUTĖ PAGAL TAVO DIZAINĄ -->
+<!-- DOVANŲ DĖŽUTĖ -->
 <div id="giftBox" class="gift" onclick="openGift()">
   <div class="day-number" id="dayNumber"></div>
 </div>
@@ -342,38 +338,44 @@ function openGift() {
   // muzika
   audio.play().catch(() => {});
 
-  // po 1 s dingsta dėžutė, atsiranda žinutė
+  // konfeti – paleidžiam iškart po paspaudimo
+  for (let i = 0; i < 40; i++) {
+    dropConfetti();
+  }
+
+  // po ~1.8 s dingsta dėžutė, atsiranda žinutė
   setTimeout(() => {
     box.style.display = "none";
     content.textContent = todaysHtml;
     content.classList.remove("hidden");
-  }, 1000);
-
-  // konfeti
-  for (let i = 0; i < 40; i++) {
-    dropConfetti();
-  }
+  }, 1800);
 }
 
-/* --- KONFETI IŠ DĖŽUTĖS VIDAUS --- */
+/* --- KONFETI SPROGSTANČIŲ IŠ DĖŽUTĖS FUNKCIJA --- */
 function dropConfetti() {
   const box = document.getElementById("giftBox");
-  const rect = box.getBoundingClientRect();
 
   const confetti = document.createElement("div");
   confetti.classList.add("confetti");
-
-  confetti.style.left = (rect.left + rect.width / 2) + "px";
-  confetti.style.top = (rect.top + rect.height / 2) + "px";
 
   const colors = ["#ffdf80", "#b30000", "#ffffff", "#ffb700"];
   confetti.style.backgroundColor =
     colors[Math.floor(Math.random() * colors.length)];
 
-  confetti.style.animationDuration =
-    (1.2 + Math.random() * 1.4) + "s";
+  // atsitiktinė kryptis: į kairę/dešinę ir žemyn
+  const x = (Math.random() * 2 - 1) * 120; // nuo -120 iki 120 px
+  const y = 80 + Math.random() * 180;      // nuo 80 iki 260 px žemyn
 
-  document.body.appendChild(confetti);
+  confetti.style.setProperty("--x", x.toFixed(0));
+  confetti.style.setProperty("--y", y.toFixed(0));
+
+  // šiek tiek skirtingas greitis
+  confetti.style.animationDuration =
+    (1.2 + Math.random() * 0.8) + "s";
+
+  // prijungiam konfeti prie dėžutės
+  box.appendChild(confetti);
+
   confetti.addEventListener("animationend", () => confetti.remove());
 }
 </script>
