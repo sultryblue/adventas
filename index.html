@@ -219,9 +219,9 @@ body {
 .gift-message {
   position: absolute;
   left: 50%;
-  top: -40px;
+  bottom: 100%;                        /* vietoj top:-40px — prisiriša prie dangčio apačios */
+  transform: translateX(-50%) translateY(-10px);
   width: 240px;
-  transform: translate(-50%, 0);
   font-size: 0.95rem;
   font-weight: 600;
   color: #ffdf80;
@@ -230,11 +230,12 @@ body {
   pointer-events: none;
   transition: opacity 0.6s ease, transform 0.6s ease;
   z-index: 5;
+  text-align: center;
 }
 
 .gift.opened .gift-message {
   opacity: 1;
-  transform: translate(-50%, 6px);
+  transform: translateX(-50%) translateY(-4px);
 }
 
 /* Purtymas */
