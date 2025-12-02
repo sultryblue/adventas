@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-  /* Fono pataisymas – gradientas nesikartoja */
+  /* Fonas – gradientas nesikartoja */
   html, body {
     height: 100%;
   }
@@ -39,8 +39,6 @@
     margin: 0 auto;
     border-radius: 8px;
   }
-
-  /* ---- CANDY CANE PROGRESS JUOSTA ---- */
 
   .progress-bar {
     width: 80%;
@@ -99,7 +97,7 @@
   .gift-wrapper {
     margin-top: 25px;
     display: flex;
-    flex-direction: column;      /* dėžutė centre, rodyklė uždedama ant šono */
+    flex-direction: column;
     align-items: center;
     gap: 8px;
     position: relative;
@@ -107,7 +105,7 @@
   }
 
   .gift-wrapper.opened {
-    margin-top: 80px; /* kai atsidaro, visas blokas nuslenka žemyn */
+    margin-top: 90px; /* daugiau vietos viršuje, kai atsidaro */
   }
 
   .gift {
@@ -118,9 +116,9 @@
     transition: transform 0.6s ease;
   }
 
-  /* Kai atidarom – nuleidžiam dėžutę, kad dangtis/progress nesikirstų */
+  /* Kai atidarom – dėžė šiek tiek nuleidžiama žemyn */
   .gift.opened {
-    transform: translateY(40px);
+    transform: translateY(50px);
   }
 
   /* Dėžės korpusas */
@@ -143,7 +141,6 @@
     overflow: hidden;
   }
 
-  /* Vertikali auksinė juosta ant dėžės */
   .vertical-band {
     position: absolute;
     top: 0;
@@ -181,7 +178,7 @@
     z-index: 3;
   }
 
-  /* Bantų kilpos */
+  /* Bantai */
   .bow-left,
   .bow-right {
     position: absolute;
@@ -217,13 +214,13 @@
     box-shadow: 0 0 6px rgba(0,0,0,0.4);
   }
 
-  /* Atidaryta būsena – dangtis pakyla */
+  /* Atvira dėžė – dangtis nueina aukščiau, daugiau tarpo */
   .gift.opened .gift-lid {
-    transform: translateY(-70px) rotate(-6deg);
+    transform: translateY(-100px) rotate(-10deg);
     box-shadow: 0 22px 26px rgba(0,0,0,0.6);
   }
 
-  /* Dienos numeris ant dėžės */
+  /* Dienos numeris */
   .day-number {
     position: absolute;
     top: 18px;
@@ -242,14 +239,14 @@
     transform: translateX(-50%) scale(0.9);
   }
 
-  /* Žinutė – virš dėžutės, kad niekas neužstodų */
+  /* Žinutė – virš dėžės, su didesne erdve */
   .gift-message {
     position: absolute;
     left: 50%;
-    top: -18px; /* virš dangčio */
-    width: 220px;
+    top: -40px;
+    width: 240px;
     transform: translate(-50%, 0);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 600;
     color: #ffdf80;
     text-shadow: 0 0 4px rgba(0,0,0,0.9);
@@ -261,7 +258,7 @@
 
   .gift.opened .gift-message {
     opacity: 1;
-    transform: translate(-50%, 4px);
+    transform: translate(-50%, 6px);
   }
 
   /* Purtymas */
@@ -277,44 +274,59 @@
     80% { transform: translateX(4px); }
   }
 
-  /* Konfeti – smulkesni, jų daug ir skrenda į šonus/viršų */
+  /* KONFETI – be CSS kintamųjų, su keliomis skirtingomis trajektorijomis */
 
   .confetti {
-    position: absolute;
-    width: 5px;
-    height: 9px;
-    opacity: 0;
+    position: fixed;  /* kad tikrai matytųsi virš visko */
+    width: 6px;
+    height: 10px;
     border-radius: 2px;
-    top: 55px; /* maždaug per tarpą */
-    left: 50%;
-    transform: translateX(-50%) rotate(0deg);
+    opacity: 0;
     pointer-events: none;
-    animation: burst 1.7s ease-out forwards;
-    z-index: 6;
+    animation-duration: 1.3s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+    z-index: 999;
   }
 
-  @keyframes burst {
-    0% {
-      opacity: 1;
-      transform: translate(-50%, 0) rotate(0deg);
-    }
-    100% {
-      opacity: 0;
-      transform:
-        translate(
-          calc(-50% + (var(--x) * 1px)),
-          calc(0 + (var(--y) * 1px))
-        )
-        rotate(900deg);
-    }
+  @keyframes burst1 {
+    0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+    100% { opacity: 0; transform: translate(-60px, -160px) rotate(720deg); }
+  }
+  @keyframes burst2 {
+    0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+    100% { opacity: 0; transform: translate(40px, -190px) rotate(720deg); }
+  }
+  @keyframes burst3 {
+    0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+    100% { opacity: 0; transform: translate(-30px, -120px) rotate(900deg); }
+  }
+  @keyframes burst4 {
+    0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+    100% { opacity: 0; transform: translate(80px, -140px) rotate(900deg); }
+  }
+  @keyframes burst5 {
+    0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+    100% { opacity: 0; transform: translate(-90px, -190px) rotate(1080deg); }
+  }
+  @keyframes burst6 {
+    0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+    100% { opacity: 0; transform: translate(60px, -110px) rotate(1080deg); }
   }
 
-  /* Rodyklė "Paspausk" – šone, bet dėžutė centre */
+  .confetti.type1 { animation-name: burst1; }
+  .confetti.type2 { animation-name: burst2; }
+  .confetti.type3 { animation-name: burst3; }
+  .confetti.type4 { animation-name: burst4; }
+  .confetti.type5 { animation-name: burst5; }
+  .confetti.type6 { animation-name: burst6; }
+
+  /* Rodyklė "Paspausk" – šone, dėžė centre */
 
   .hint {
     position: absolute;
-    top: 40px;
-    left: calc(50% + 90px); /* į dešinę nuo dėžutės centro */
+    top: 20px;
+    left: calc(50% + 90px);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -336,7 +348,6 @@
     height: 30px;
   }
 
-  /* Lenkta rodyklė, rodanti į dėžutę iš dešinės į kairę */
   .hint-arrow::before {
     content: "";
     position: absolute;
@@ -372,14 +383,14 @@
 
   .hidden { display: none; }
 
-  /* Prisitaikymas mažiems ekranams */
+  /* Mobilui – rodyklę nuleidžiam žemyn, jei labai siauras ekranas */
   @media (max-width: 480px) {
     .hint {
       position: static;
       margin-top: 8px;
     }
     .gift-wrapper.opened {
-      margin-top: 60px;
+      margin-top: 70px;
     }
   }
 
@@ -387,13 +398,11 @@
 </head>
 <body>
 
-<!-- AUDIO – ČIA ĮDĖK SAVO TEISINGĄ MP3 NUORODĄ -->
 <audio id="bg-music">
-  <source src="https://raw.githubusercontent.com/sultryblue/adventas/main/daina.mp3" type="audio/mpeg">
+  <source src="https://raw.githubusercontent.com/sultryblue/adventas/main/Justinas Jarutis - Kalėdos ištinka (mp3cut.net).mp3" type="audio/mpeg">
 </audio>
 
 <div class="progress-wrapper">
-
   <img src="https://raw.githubusercontent.com/sultryblue/adventas/main/foton.PNG"
        class="top-photo" alt="Viršutinė nuotrauka">
 
@@ -406,7 +415,6 @@
   <div class="progress-text" id="progressText"></div>
 </div>
 
-<!-- DOVANŲ DĖŽUTĖ + RODYKLĖ -->
 <div id="giftWrapper" class="gift-wrapper">
   <div id="giftBox" class="gift" onclick="openGift()">
     <div class="gift-lid">
@@ -493,18 +501,17 @@ function openGift() {
     setTimeout(() => { hint.style.display = "none"; }, 400);
   }
 
-  // foninė muzika
+  // muzika
   audio.play().catch(() => {});
 
   // žinutė virš dėžės ir apačioje
   message.textContent = todaysHtml;
 
-  // konfeti – daugiau ir smulkesni
-  for (let i = 0; i < 100; i++) {
+  // konfeti
+  for (let i = 0; i < 70; i++) {
     dropConfetti();
   }
 
-  // po purtymo atidarom dangtį ir nuleidžiam dėžę
   setTimeout(() => {
     box.classList.remove("shake");
     box.classList.add("opened");
@@ -514,9 +521,10 @@ function openGift() {
   }, 450);
 }
 
-/* --- KONFETI SPROGSTANČIŲ IŠ DĖŽUTĖS FUNKCIJA --- */
+/* --- KONFETI FUNKCIJA (naudojam kelis fiksuotus keyframes) --- */
 function dropConfetti() {
   const box = document.getElementById("giftBox");
+  const rect = box.getBoundingClientRect();
 
   const confetti = document.createElement("div");
   confetti.classList.add("confetti");
@@ -525,20 +533,21 @@ function dropConfetti() {
   confetti.style.backgroundColor =
     colors[Math.floor(Math.random() * colors.length)];
 
-  // horizontaliai: -160 iki 160 (į abu šonus)
-  const x = (Math.random() * 2 - 1) * 160;
+  // pradinė pozicija – dėžutės vidurys ekrane
+  const startX = rect.left + rect.width / 2;
+  const startY = rect.top + rect.height / 2;
+  confetti.style.left = startX + "px";
+  confetti.style.top = startY + "px";
 
-  // vertikaliai: -120 iki 120 (daug matomų aplink dėžutę)
-  const y = (Math.random() * 2 - 1) * 120;
+  // atsitiktinė trajektorija iš 6 variantų
+  const type = Math.floor(Math.random() * 6) + 1;
+  confetti.classList.add("type" + type);
 
-  confetti.style.setProperty("--x", x.toFixed(0));
-  confetti.style.setProperty("--y", y.toFixed(0));
-
-  // skirtingas greitis
+  // atsitiktinė trukmė
   confetti.style.animationDuration =
-    (1.1 + Math.random() * 0.9) + "s";
+    (1 + Math.random() * 0.6).toFixed(2) + "s";
 
-  box.appendChild(confetti);
+  document.body.appendChild(confetti);
 
   confetti.addEventListener("animationend", () => confetti.remove());
 }
