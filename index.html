@@ -10,446 +10,338 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-  /* Fonas – gradientas nesikartoja */
-  html, body {
-    height: 100%;
-  }
 
-  body {
-    font-family: "Poppins", sans-serif;
-    background: linear-gradient(to bottom, #0b2e13, #145c1f);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    text-align: center;
-    padding: 5px 10px 40px;
-    color: #fff;
-    margin: 0;
-  }
+/* -------------------- BENDRAS FONAS -------------------- */
+html, body { height: 100%; }
 
-  /* ---- VIRŠUTINĖ NUOTRAUKA + PROGRESS ---- */
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to bottom, #0b2e13, #145c1f);
+  background-attachment: fixed;
+  margin: 0;
+  padding: 5px 10px 40px;
+  color: white;
+  text-align: center;
+}
 
-  .progress-wrapper {
-    max-width: 700px;
-    margin: 0 auto 40px auto;
-  }
+/* -------------------- FOTO + PROGRESS -------------------- */
 
-  .top-photo {
-    width: 45%;
-    display: block;
-    margin: 0 auto 0px;   /* kad „liestųsi“ su progress bar */
-    border-radius: 8px 8px 0 0;
-  }
+.progress-wrapper { max-width: 700px; margin: 0 auto 40px; }
 
-  .progress-bar {
-    width: 80%;
-    height: 30px;
-    margin: 0 auto;        /* jokių tarpų viršuje */
-    background: rgba(0,0,0,0.45);
-    border-radius: 15px;
-    border: none;
-    outline: 2px solid #b30000;
-    outline-offset: 0;
-    overflow: hidden;
-    position: relative;
-  }
+.top-photo {
+  width: 45%;
+  display: block;
+  margin: 0 auto -4px;
+  border-radius: 8px 8px 0 0;
+}
 
-  .progress-fill-wrapper {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 0%;
-    overflow: hidden;
-    border-radius: 15px;
-    transition: width 0.7s ease-out;
-  }
+.progress-bar {
+  width: 80%;
+  height: 30px;
+  margin: 0 auto;
+  background: rgba(0,0,0,0.45);
+  border-radius: 15px;
+  outline: 2px solid #b30000;
+  position: relative;
+  overflow: hidden;
+}
 
-  .progress-candy {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 200%;
-    height: 100%;
-    background: repeating-linear-gradient(
-      45deg,
-      #ff0000 0 15px,
-      #ffffff 15px 28.5px
-    );
-    background-size: 40px 40px;
-    animation: moveStripes 2s linear infinite;
-  }
+.progress-fill-wrapper {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 0%;
+  transition: width 0.7s ease-out;
+  border-radius: 15px;
+}
 
-  @keyframes moveStripes {
-    from { background-position: 0 0; }
-    to   { background-position: 80px 0; }
-  }
+.progress-candy {
+  width: 200%; height: 100%;
+  background: repeating-linear-gradient(45deg, #ff0000 0 15px, #ffffff 15px 28.5px);
+  animation: moveStripes 2s linear infinite;
+}
 
-  .progress-text {
-    margin-top: 15px;
-    font-weight: 700;
-    color: #ffdf80;
-    font-size: 1.2rem;
-    text-shadow: 1px 1px 3px black;
-  }
+@keyframes moveStripes {
+  from { background-position: 0 0; }
+  to   { background-position: 80px 0; }
+}
 
-  /* ---- DOVANŲ DĖŽUTĖ + RODYKLĖ ---- */
+.progress-text {
+  margin-top: 15px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #ffdf80;
+  text-shadow: 1px 1px 3px black;
+}
 
-  .gift-wrapper {
-    margin-top: 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-    transition: margin-top 0.6s ease;
-  }
+/* -------------------- DĖŽUTĖ -------------------- */
 
-  .gift-wrapper.opened {
-    margin-top: 90px;
-  }
+.gift-wrapper {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  transition: margin-top 0.6s ease;
+}
 
-  .gift {
-    position: relative;
-    width: 160px;   /* mažesnė dėžutė */
-    height: 160px;
-    cursor: pointer;
-    transition: transform 0.6s ease;
-    box-sizing: border-box;
-  }
+.gift-wrapper.opened { margin-top: 90px; }
 
-  .gift.opened {
-    transform: translateY(40px);
-  }
+.gift {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  cursor: pointer;
+  transition: transform 0.6s ease;
+}
 
-  /* Dėžės korpusas – kaip „tikra“ dėžė */
-  .gift-box-body {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 70%;
-    box-sizing: border-box;
-    border: 5px solid #7a1313;
-    background: linear-gradient(to bottom, #c80000 0%, #8b0000 100%);
-    box-shadow: 0 12px 18px rgba(0,0,0,0.5);
-    overflow: hidden;
-  }
+.gift.opened { transform: translateY(40px); }
 
-  .vertical-band {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 50px;
-    transform: translateX(-50%);
-    border-left: 5px solid #7a1313;
-    border-right: 5px solid #7a1313;
-    background: linear-gradient(to bottom, #f7e18a 0%, #d4af37 50%, #a6791a 100%);
-  }
+/* Box body */
+.gift-box-body {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 70%;
+  border: 5px solid #7a1313;
+  background: linear-gradient(to bottom, #c80000 0%, #8b0000 100%);
+  box-shadow: 0 12px 18px rgba(0,0,0,0.5);
+}
 
-  /* Dangtis */
+.vertical-band {
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 50px;
+  transform: translateX(-50%);
+  border-left: 5px solid #7a1313;
+  border-right: 5px solid #7a1313;
+  background: linear-gradient(to bottom, #f7e18a, #d4af37 50%, #a6791a);
+}
 
-  .gift-lid {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 0;
-    width: 110%;
-    height: 30%;
-    background: linear-gradient(to bottom, #ff5a5a 0%, #d30000 50%, #8b0000 100%);
-    box-sizing: border-box;
-    margin: 0;
-    transition: transform 0.7s ease, box-shadow 0.7s ease;
-    z-index: 3;
-    box-shadow: 0 2px 1px rgba(0,0,0,0.4);
-    border: 5px solid #7a1313;
-    border-bottom: 0;
-    transform-origin: center bottom;
-  }
+/* Lid */
+.gift-lid {
+  position: absolute;
+  left: 50%; top: 0;
+  width: 110%; height: 30%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, #ff5a5a, #d30000 50%, #8b0000);
+  border: 5px solid #7a1313; border-bottom: 0;
+  transform-origin: center bottom;
+  transition: transform 0.7s ease, box-shadow 0.7s ease;
+  box-shadow: 0 2px 1px rgba(0,0,0,0.4);
+}
 
-  .gift-lid::before {
-    content: "";
-    display: block;
-    height: 100%;
-    width: 56px;
-    margin: 0 auto;
-    border-left: 5px solid #7a1313;
-    border-right: 5px solid #7a1313;
-    background: linear-gradient(to bottom, #f7e18a 0%, #d4af37 50%, #a6791a 100%);
-  }
+.gift-lid::before {
+  content: "";
+  width: 56px; height: 100%;
+  margin: 0 auto;
+  display: block;
+  border-left: 5px solid #7a1313;
+  border-right: 5px solid #7a1313;
+  background: linear-gradient(to bottom, #f7e18a, #d4af37 50%, #a6791a);
+}
 
-  .gift-lid::after {
-    content: "";
-    position: absolute;
-    top: -22px;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #fff8cf 0, #d4af37 60%, #8c6b1f 100%);
-    border: 3px solid #7a1313;
-    z-index: 4;
-  }
+.gift-lid::after {
+  content: "";
+  position: absolute;
+  top: -22px; left: 50%;
+  transform: translateX(-50%);
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff8cf, #d4af37, #8c6b1f);
+  border: 3px solid #7a1313;
+}
 
-  .bow-left,
-  .bow-right,
-  .bow-knot {
-    display: none; /* paliktos tik dėl HTML, bet nenaudojamos */
-  }
+.gift.opened .gift-lid {
+  transform: translateX(-50%) translateY(-200%) rotate(5deg);
+  box-shadow: 0 22px 26px rgba(0,0,0,0.7);
+}
 
-  .gift.opened .gift-lid {
-    transform: translateX(-50%) translateY(-200%) rotate(5deg);
-    box-shadow: 0 22px 26px rgba(0,0,0,0.7);
-  }
+/* Day number */
+.day-number {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  font-weight: 700;
+  color: #fffbe0;
+  text-shadow: 0 0 6px black;
+  transition: opacity 0.4s, transform 0.4s;
+}
 
-  /* Dienos numeris */
+.gift.opened .day-number {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+}
 
-  .day-number {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 32px;
-    font-weight: 700;
-    color: #fffbe0;
-    text-shadow: 0 0 6px black;
-    z-index: 2;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-  }
+/* Message */
+.gift-message {
+  position: absolute;
+  top: -40px; left: 50%;
+  transform: translateX(-50%);
+  width: 240px;
+  font-weight: 600;
+  color: #ffdf80;
+  text-shadow: 0 0 4px black;
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
 
-  .gift.opened .day-number {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.9);
-  }
+.gift.opened .gift-message {
+  opacity: 1;
+  transform: translate(-50%, 6px);
+}
 
-  /* Žinutė virš dėžės */
+/* Shake */
+.shake { animation: wobble 0.45s ease-in-out; }
 
-  .gift-message {
-    position: absolute;
-    left: 50%;
-    top: -40px;
-    width: 240px;
-    transform: translate(-50%, 0);
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #ffdf80;
-    text-shadow: 0 0 4px rgba(0,0,0,0.9);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.6s ease, transform 0.6s ease;
-    z-index: 5;
-  }
+@keyframes wobble {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
 
-  .gift.opened .gift-message {
-    opacity: 1;
-    transform: translate(-50%, 6px);
-  }
+/* -------------------- RODYKLĖ -------------------- */
 
-  /* Purtymas */
+.hint {
+  position: absolute;
+  top: 20px;
+  left: calc(50% + 120px);   /* on the right of the box */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffdf80;
+  font-weight: 600;
+  animation: hintPulse 1.4s ease-in-out infinite;
+}
 
-  .shake {
-    animation: wobble 0.45s ease-in-out;
-  }
+@keyframes hintPulse {
+  0%,100% { opacity: 0.6; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-2px); }
+}
 
-  @keyframes wobble {
-    0%,100% { transform: translateX(0); }
-    20% { transform: translateX(-6px); }
-    40% { transform: translateX(6px); }
-    60% { transform: translateX(-4px); }
-    80% { transform: translateX(4px); }
-  }
+/* Arrow pointing LEFT */
+.hint-arrow {
+  position: relative;
+  width: 32px;
+  height: 20px;
+}
 
-  /* KONFETI */
+.hint-arrow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  right: 0;
+  border-top: 2px solid #ffdf80;
+  transform: translateY(-50%);
+}
 
-  .confetti {
-    position: fixed;
-    width: 6px;
-    height: 10px;
-    border-radius: 2px;
-    opacity: 0;
-    pointer-events: none;
-    animation-name: burst;
-    animation-timing-function: ease-out;
-    animation-fill-mode: forwards;
-    z-index: 999;
-  }
+.hint-arrow::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 10px solid #ffdf80; /* → points LEFT */
+}
 
-  @keyframes burst {
-    0% {
-      opacity: 1;
-      transform: translate(0, 0) rotate(0deg);
-    }
-    100% {
-      opacity: 0;
-      transform: translate(var(--dx), var(--dy)) rotate(900deg);
-    }
-  }
+/* -------------------- PHONE -------------------- */
 
-  /* Rodyklė + tekstas „Paspausk“ */
-
+@media (max-width: 480px) {
   .hint {
-    position: absolute;
-    top: 20px;
-    left: calc(50% + 120px);  /* dešinėje dėžutės */
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #ffdf80;
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-shadow: 0 0 4px rgba(0,0,0,0.8);
-    animation: hintPulse 1.4s ease-in-out infinite;
-  }
-
-  @keyframes hintPulse {
-    0%, 100% { opacity: 0.6; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(-2px); }
+    position: static;
+    margin-top: 12px;
+    flex-direction: column;
   }
 
   .hint-arrow {
-    position: relative;
-    width: 32px;
-    height: 20px;
-    transform: rotate(180deg); /* rodyklė žiūri į kairę (į dėžutę) */
+    transform: rotate(-90deg); /* now arrows UP */
   }
 
-  .hint-arrow::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 0;
-    width: 28px;
-    height: 0;
-    border-top: 2px solid #ffdf80;    /* linija */
-    transform: translateY(-50%);
-  }
+  .gift-wrapper.opened { margin-top: 70px; }
+}
 
-  .hint-arrow::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
-    border-right: 10px solid #ffdf80; /* smaigalys (prieš rotaciją žiūri →) */
-  }
+/* -------------------- CONFETTI -------------------- */
 
-  #content {
-    margin-top: 25px;
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #ffdf80;
-    text-shadow: 0 0 6px black;
-  }
+.confetti {
+  position: fixed;
+  width: 6px; height: 10px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: burst ease-out forwards;
+  z-index: 999;
+}
 
-  .hidden { display: none; }
-
-  /* Mažas telefonas – hint po dėže, rodyklė į viršų */
-
-  @media (max-width: 480px) {
-    .hint {
-      position: static;
-      margin-top: 8px;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .hint-arrow {
-      transform: rotate(-90deg); /* vietoj į kairę – dabar žiūri į viršų */
-    }
-
-    .gift-wrapper.opened {
-      margin-top: 70px;
-    }
-  }
+@keyframes burst {
+  0%   { opacity: 1; transform: translate(0,0) rotate(0deg); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(900deg); }
+}
 
 </style>
 </head>
 <body>
 
 <audio id="bg-music">
-  <source src="https://raw.githubusercontent.com/sultryblue/adventas/main/daina.mp3" type="audio/mpeg">
+  <source src="https://raw.githubusercontent.com/sultryblue/adventas/main/dainaKV.mp3" type="audio/mpeg">
 </audio>
 
 <div class="progress-wrapper">
-  <img src="https://raw.githubusercontent.com/sultryblue/adventas/main/foton.PNG"
-       class="top-photo" alt="Viršutinė nuotrauka">
-
+  <img src="https://raw.githubusercontent.com/sultryblue/adventas/main/foton.PNG" class="top-photo">
   <div class="progress-bar">
     <div class="progress-fill-wrapper" id="progressFillWrapper">
       <div class="progress-candy"></div>
     </div>
   </div>
-
   <div class="progress-text" id="progressText"></div>
 </div>
 
 <div id="giftWrapper" class="gift-wrapper">
   <div id="giftBox" class="gift" onclick="toggleGift()">
-    <div class="gift-lid">
-      <div class="bow-left"></div>
-      <div class="bow-right"></div>
-      <div class="bow-knot"></div>
-    </div>
+    <div class="gift-lid"></div>
     <div class="gift-box-body">
       <div class="vertical-band"></div>
-      <div class="day-number" id="dayNumber"></div>
+      <div id="dayNumber" class="day-number"></div>
     </div>
     <div id="giftMessage" class="gift-message"></div>
   </div>
 
   <div id="giftHint" class="hint">
-    <div class="hint-text">Paspausk</div>
+    <div>Paspausk</div>
     <div class="hint-arrow"></div>
   </div>
 </div>
 
-<div id="content" class="hidden"></div>
-
 <script>
-/* --- DIENOS NUMERIS ANT DĖŽUTĖS --- */
+/* ---------- DAY NUMBER ---------- */
 const today = new Date();
 const day = today.getDate();
 document.getElementById("dayNumber").textContent = day;
 
-/* --- ADVENTO ŽINUTĖS --- */
+/* ---------- MESSAGES ---------- */
 const messages = {
   1: { text: "✨ Gruodžio 1! Prasideda mūsų GIS advento kelionė!" },
   2: { text: "❄️ Gruodžio 2! Šiandien pasileisk kokią kalėdinę dainą dirbdama(s)." },
   3: { text: "🎶 Gruodžio 3! Maža pertraukėlė su šia daina 🙂" }
 };
 
-let todaysHtml;
-if (messages[day]) {
-  todaysHtml = messages[day].text;
-} else {
-  todaysHtml = "❄️ Advento kalendorius atsidaro tik gruodį!";
-}
+let todaysHtml = messages[day]?.text || "❄️ Advento kalendorius atsidaro tik gruodį!";
 
-/* --- PROGRESO JUOSTA --- */
+/* ---------- PROGRESS BAR ---------- */
 const adventEnd = new Date(today.getFullYear(), 11, 24);
-let progressPercent = 0;
+let progressPercent = today.getMonth() + 1 === 12 ? Math.min(day / 24 * 100, 100) : 0;
 
-if (today.getMonth() + 1 === 12) {
-  progressPercent = Math.min((day / 24) * 100, 100);
-}
-
-const progressFillWrapper = document.getElementById("progressFillWrapper");
-progressFillWrapper.style.width = progressPercent + "%";
+document.getElementById("progressFillWrapper").style.width = progressPercent + "%";
 
 let daysUntil = Math.max(0, Math.ceil((adventEnd - today) / 86400000));
-const progressTextEl = document.getElementById("progressText");
+document.getElementById("progressText").textContent =
+  daysUntil === 0 ? "Šiandien Kalėdos! 🎄"
+                  : `Iki Kalėdų liko ${daysUntil} dienų!`;
 
-if (daysUntil === 0) {
-  progressTextEl.textContent = "Šiandien Kalėdos! 🎄";
-} else {
-  progressTextEl.textContent =
-    `Iki Kalėdų liko ${daysUntil} dienų – ${day} diena iš 24`;
-}
-
-/* --- DOVANĖLĖS ATIDARYMAS/UŽDARYMAS --- */
+/* ---------- OPEN/CLOSE GIFT ---------- */
 let opened = false;
 
 function toggleGift() {
@@ -459,7 +351,6 @@ function toggleGift() {
   const hint = document.getElementById("giftHint");
   const audio = document.getElementById("bg-music");
 
-  // JEI ATIDARYTA → UŽDARYTI
   if (opened) {
     box.classList.remove("opened");
     wrapper.classList.remove("opened");
@@ -467,30 +358,27 @@ function toggleGift() {
     return;
   }
 
-  // JEI UŽDARYTA → ATIDARYTI
   opened = true;
 
-  // purtymas
+  /* shake */
   box.classList.add("shake");
 
-  // muzika
+  /* play audio */
   audio.play().catch(() => {});
 
-  // paslepiam hintą tik pirmą kartą
+  /* hide hint permanently after first click */
   if (hint && hint.style.display !== "none") {
     hint.style.opacity = "0";
-    setTimeout(() => { hint.style.display = "none"; }, 400);
+    setTimeout(() => hint.style.display = "none", 400);
   }
 
-  // žinutė virš dėžės
+  /* show message */
   message.textContent = todaysHtml;
   message.style.opacity = "";
   message.style.transform = "";
 
-  // konfeti
-  for (let i = 0; i < 80; i++) {
-    dropConfetti();
-  }
+  /* confetti */
+  for (let i = 0; i < 80; i++) dropConfetti();
 
   setTimeout(() => {
     box.classList.remove("shake");
@@ -499,35 +387,33 @@ function toggleGift() {
   }, 450);
 }
 
-/* --- KONFETI FUNKCIJA --- */
+/* ---------- CONFETTI ---------- */
 function dropConfetti() {
   const box = document.getElementById("giftBox");
   const rect = box.getBoundingClientRect();
 
-  const confetti = document.createElement("div");
-  confetti.classList.add("confetti");
+  const c = document.createElement("div");
+  c.classList.add("confetti");
 
   const colors = ["#ffdf80", "#b30000", "#ffffff", "#ffb700"];
-  confetti.style.backgroundColor =
-    colors[Math.floor(Math.random() * colors.length)];
+  c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
 
   const startX = rect.left + rect.width / 2;
   const startY = rect.top + rect.height / 2;
-  confetti.style.left = startX + "px";
-  confetti.style.top = startY + "px";
+
+  c.style.left = startX + "px";
+  c.style.top = startY + "px";
 
   const dx = (Math.random() * 2 - 1) * 160;
   const dy = -220 + Math.random() * 160;
 
-  confetti.style.setProperty("--dx", dx.toFixed(1) + "px");
-  confetti.style.setProperty("--dy", dy.toFixed(1) + "px");
+  c.style.setProperty("--dx", dx + "px");
+  c.style.setProperty("--dy", dy + "px");
 
-  confetti.style.animationDuration =
-    (1 + Math.random() * 0.7).toFixed(2) + "s";
+  c.style.animationDuration = (1 + Math.random() * 0.7) + "s";
 
-  document.body.appendChild(confetti);
-
-  confetti.addEventListener("animationend", () => confetti.remove());
+  document.body.appendChild(c);
+  c.addEventListener("animationend", () => c.remove());
 }
 </script>
 
