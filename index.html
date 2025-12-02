@@ -110,34 +110,29 @@
 
   .gift {
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: 200px;
+    height: 200px;
     cursor: pointer;
     transition: transform 0.6s ease;
+    box-sizing: border-box;
   }
 
   /* Kai atidarom – dėžė šiek tiek nuleidžiama žemyn */
   .gift.opened {
-    transform: translateY(50px);
+    transform: translateY(40px);
   }
 
-  /* Dėžės korpusas */
+  /* Dėžės korpusas – labiau kaip CodePen dėžutė */
   .gift-box-body {
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
-    height: 80px;
-    border-radius: 10px;
-    background:
-      linear-gradient(to bottom,
-        #ff5a5a 0%,
-        #d30000 45%,
-        #8b0000 100%
-      );
-    box-shadow:
-      0 18px 32px -16px rgba(0,0,0,0.45),
-      0 0 0 2px rgba(0,0,0,0.2);
+    height: 70%;
+    box-sizing: border-box;
+    border: 5px solid #7a1313;
+    background: linear-gradient(to bottom, #c80000 0%, #8b0000 100%);
+    box-shadow: 0 12px 18px rgba(0,0,0,0.5);
     overflow: hidden;
   }
 
@@ -146,86 +141,83 @@
     top: 0;
     bottom: 0;
     left: 50%;
-    width: 24px;
+    width: 50px;
     transform: translateX(-50%);
-    background:
-      linear-gradient(to right,
-        #a67c00 0%,
-        #f7e18a 40%,
-        #d4af37 65%,
-        #8c6b1f 100%
-      );
-    opacity: 0.95;
+    border-left: 5px solid #7a1313;
+    border-right: 5px solid #7a1313;
+    background: linear-gradient(to bottom, #f7e18a 0%, #d4af37 50%, #a6791a 100%);
   }
 
-  /* Dėžės dangtis */
+  /* Dėžės dangtis – 110% pločio, kaip CodePen */
   .gift-lid {
     position: absolute;
-    left: -4px;
-    right: -4px;
-    top: 0;
-    height: 34px;
-    border-radius: 12px 12px 8px 8px;
-    background:
-      linear-gradient(to bottom,
-        #ff8a8a 0%,
-        #e00000 50%,
-        #9a0000 100%
-      );
-    box-shadow: 0 6px 10px rgba(0,0,0,0.45);
-    transform-origin: center bottom;
-    transition: transform 0.6s ease, box-shadow 0.6s ease;
-    z-index: 3;
-  }
-
-  /* Bantai */
-  .bow-left,
-  .bow-right {
-    position: absolute;
-    top: -16px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50% 50% 0 50%;
-    background:
-      radial-gradient(circle at 20% 100%, #fdf4c3 0, #d4af37 45%, #a88222 80%);
-    box-shadow: 0 0 6px rgba(0,0,0,0.4);
-  }
-
-  .bow-left {
-    left: 50%;
-    transform: translateX(-125%) rotate(-18deg);
-  }
-
-  .bow-right {
-    right: 50%;
-    transform: translateX(125%) scaleX(-1) rotate(-18deg);
-  }
-
-  .bow-knot {
-    position: absolute;
-    top: -6px;
     left: 50%;
     transform: translateX(-50%);
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #fdf4c3 0, #d4af37 55%, #966f18 100%);
-    z-index: 4;
-    box-shadow: 0 0 6px rgba(0,0,0,0.4);
+    top: 0;
+    width: 110%;
+    height: 30%;
+    background: linear-gradient(to bottom, #ff5a5a 0%, #d30000 50%, #8b0000 100%);
+    box-sizing: border-box;
+    margin: 0;
+    transition: transform 0.7s ease, box-shadow 0.7s ease;
+    z-index: 3;
+    box-shadow: 0 2px 1px rgba(0,0,0,0.4);
+    border: 5px solid #7a1313;
+    border-bottom: 0;
+    transform-origin: center bottom;
   }
 
-  /* Atvira dėžė – dangtis nueina aukščiau, daugiau tarpo */
+  /* Vertikali juostelė ant dangčio – kaip CodePen .lid:before */
+  .gift-lid::before {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 56px;
+    margin: 0 auto;
+    border-left: 5px solid #7a1313;
+    border-right: 5px solid #7a1313;
+    background: linear-gradient(to bottom, #f7e18a 0%, #d4af37 50%, #a6791a 100%);
+  }
+
+  /* Apvalus mazgelis viršuje – CodePen .lid:after idėja */
+  .gift-lid::after {
+    content: "";
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff8cf 0, #d4af37 60%, #8c6b1f 100%);
+    border: 3px solid #7a1313;
+    z-index: 4;
+  }
+
+  /* Paprastesnis kaspinas (dvi kilpos) – inspiruota CodePen ribbon */
+  .bow-left,
+  .bow-right,
+  .bow-knot {
+    /* paliekam, kad neišsikrautų HTML, bet naują kaspiną darom su .gift-lid .ribbon */
+    display: none;
+  }
+
+  .gift-lid .ribbon {
+    /* jei kada norėsi – gali įdėti papildomą span su class="ribbon" */
+  }
+
+  /* Atvira dėžė – dangtis nueina aukštyn kaip CodePen .box.open .lid */
   .gift.opened .gift-lid {
-    transform: translateY(-100px) rotate(-10deg);
-    box-shadow: 0 22px 26px rgba(0,0,0,0.6);
+    transform: translateX(-50%) translateY(-200%) rotate(5deg);
+    box-shadow: 0 22px 26px rgba(0,0,0,0.7);
   }
 
   /* Dienos numeris */
   .day-number {
     position: absolute;
-    top: 18px;
+    top: 40%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     font-size: 32px;
     font-weight: 700;
     color: #fffbe0;
@@ -236,7 +228,7 @@
 
   .gift.opened .day-number {
     opacity: 0;
-    transform: translateX(-50%) scale(0.9);
+    transform: translate(-50%, -50%) scale(0.9);
   }
 
   /* Žinutė – virš dėžės, su didesne erdve */
@@ -305,8 +297,9 @@
   .hint {
     position: absolute;
     top: 20px;
-    left: calc(50% + 90px);
+    left: calc(50% + 120px);
     display: flex;
+    flex-direction: row-reverse; /* <-- Rodyklė kairėje, tekstas dešinėje */
     align-items: center;
     gap: 8px;
     color: #ffdf80;
@@ -314,8 +307,7 @@
     font-size: 0.95rem;
     text-shadow: 0 0 4px rgba(0,0,0,0.8);
     animation: hintPulse 1.4s ease-in-out infinite;
-  }
-
+}
   @keyframes hintPulse {
     0%, 100% { opacity: 0.6; transform: translateY(0); }
     50% { opacity: 1; transform: translateY(-2px); }
@@ -330,27 +322,27 @@
   .hint-arrow::before {
     content: "";
     position: absolute;
-    right: 0;
+    left: 0;               /* buvo right: 0; */
     top: 6px;
     width: 24px;
     height: 24px;
     border-radius: 50%;
     border: 2px solid #ffdf80;
-    border-color: transparent transparent #ffdf80 #ffdf80;
-    transform: rotate(-30deg);
-  }
+    border-color: #ffdf80 #ffdf80 transparent transparent; /* apsukta kryptis */
+    transform: rotate(150deg); /* buvo -30deg – pasukam į kitą pusę */
+}
 
-  .hint-arrow::after {
+.hint-arrow::after {
     content: "";
     position: absolute;
-    left: 0;
+    right: 0;              /* buvo left: 0; */
     bottom: 6px;
     width: 8px;
     height: 8px;
-    border-left: 2px solid #ffdf80;
-    border-bottom: 2px solid #ffdf80;
-    transform: translate(-2px, 2px) rotate(35deg);
-  }
+    border-right: 2px solid #ffdf80;  /* buvo left */
+    border-top: 2px solid #ffdf80;    /* buvo bottom */
+    transform: translate(2px, 2px) rotate(-35deg); /* apsukam smaigalį */
+}
 
   #content {
     margin-top: 25px;
@@ -373,6 +365,7 @@
   }
 
 </style>
+
 </head>
 <body>
 
