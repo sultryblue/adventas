@@ -26,12 +26,11 @@
     margin: 0 auto 40px auto;
   }
 
-  /* Didelė nuotrauka viršuje, be rėmelių, susilieja su juosta */
   .top-photo {
-    width: 45%;            /* galima keisti 40–55 pagal skonį */
+    width: 45%;
     display: block;
     margin: 0 auto;
-    margin-bottom: 0px;   /* priglaudžia nuotrauką prie juostos */
+    margin-bottom: 0;
     border: none;
     border-radius: 0;
     box-shadow: none;
@@ -39,7 +38,7 @@
 
   .progress-bg {
     position: relative;
-    margin-top: 0px;      /* kad juosta nelįstų ant nuotraukos */
+    margin-top: 0;
   }
 
   .progress-bar {
@@ -57,8 +56,6 @@
     height: 100%;
     width: 0%;
     border-radius: 15px;
-
-    /* Candy cane efektas */
     background: repeating-linear-gradient(
       45deg,
       #b30000 0px,
@@ -120,11 +117,8 @@
     border: 3px solid #0b2e13;
   }
 
-  .video-wrapper {
-    margin-top: 15px;
-  }
-
   .video-wrapper iframe {
+    margin-top: 15px;
     width: 100%;
     max-width: 420px;
     height: 240px;
@@ -132,9 +126,76 @@
     border-radius: 6px;
   }
 
+  /* DOVANŲ DĖŽUTĖ */
+  .gift-box {
+    position: relative;
+    width: 160px;
+    height: 130px;
+    margin: 10px auto 0 auto;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .gift-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  }
+
+  .gift-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 75px;
+    background: linear-gradient(#b30000, #700000);
+    border-radius: 0 0 8px 8px;
+  }
+
+  .gift-lid {
+    position: absolute;
+    top: 0;
+    left: -5px;
+    right: -5px;
+    height: 40px;
+    background: linear-gradient(#d01010, #b30000);
+    border-radius: 8px 8px 4px 4px;
+  }
+
+  .gift-ribbon-vertical {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(#ffdf80, #ffc040);
+  }
+
+  .gift-ribbon-horizontal {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 16px;
+    top: 38px;
+    background: linear-gradient(#ffdf80, #ffc040);
+  }
+
+  .gift-text {
+    position: absolute;
+    bottom: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #b30000;
+  }
+
+  .hidden {
+    display: none;
+  }
+
   /* --- RESPONSYVUS DIZAINAS --- */
 
-  /* Telefonams ir smulkiems ekranams */
   @media (max-width: 600px) {
 
     body {
@@ -143,7 +204,7 @@
 
     .top-photo {
       width: 70%;
-      margin-bottom: 0px;
+      margin-bottom: 0;
     }
 
     .progress-bar {
@@ -172,9 +233,12 @@
     .video-wrapper iframe {
       height: 200px;
     }
+
+    .gift-text {
+      font-size: 0.85rem;
+    }
   }
 
-  /* Labai maži ekranai (320–400px) */
   @media (max-width: 400px) {
 
     .top-photo {
@@ -197,6 +261,11 @@
 </head>
 <body>
 
+<!-- AUDIO (muzika) – keisk URL į savo MP3 -->
+<audio id="bg-music">
+  <source src="https://raw.githubusercontent.com/sultryblue/adventas/main/daina1.mp3" type="audio/mp3">
+</audio>
+
 <!-- FOTO + PROGRESS BAR -->
 <div class="progress-wrapper">
 
@@ -216,9 +285,19 @@
 <div class="box">
   <h1>🎄 GIS advento kalendorius 🎄</h1>
 
-  <div id="content">Kraunama...</div>
+  <!-- Dovanų dėžutė, kurią paspaudus atsiranda žinutė + muzika -->
+  <div id="giftBox" class="gift-box" onclick="openGift()">
+    <div class="gift-lid"></div>
+    <div class="gift-body"></div>
+    <div class="gift-ribbon-vertical"></div>
+    <div class="gift-ribbon-horizontal"></div>
+    <div class="gift-text">Atidaryk šiandienos staigmeną 🎁</div>
+  </div>
 
-  <!-- TAS PATS VIDEO VISOMS DIENOMS -->
+  <!-- Žinutė (iš pradžių paslėpta) -->
+  <div id="content" class="hidden">Kraunama...</div>
+
+  <!-- Tas pats video visoms dienoms -->
   <div class="video-wrapper">
     <iframe
       src="https://www.youtube.com/embed/VNIHnKdNcKU"
@@ -249,7 +328,6 @@ const year = today.getFullYear();
 const adventStart = new Date(year, 11, 1);   // gruodžio 1
 const adventEnd   = new Date(year, 11, 24);  // gruodžio 24
 
-// Kalėdos: jei nori 25 d., pakeisk 24 į 25
 const christmasDate = new Date(year, 11, 24);
 
 const currentDay = today.getDate();
@@ -263,7 +341,7 @@ function daysBetween(d1, d2) {
   return Math.round((stripTime(d2) - stripTime(d1)) / oneDayMs);
 }
 
-// Progreso procentai: 1 d. ~4%, 24 d. = 100%
+// Progreso procentai
 let progressPercent = 0;
 if (today < adventStart) {
   progressPercent = 0;
@@ -290,7 +368,9 @@ document.getElementById("progressText").textContent =
     ? "Šiandien Kalėdos! 🎄"
     : `Iki Kalėdų liko ${daysLeft} dienų! – ${progressLabel}`;
 
-// ---------- RODYTI ŠIANDIENOS ŽINUTĘ ----------
+// ---------- ŽINUTĖS PARUOŠIMAS (bet nerodom kol neatidaroma dėžutė) ----------
+let todaysHtml = "";
+
 function buildContent(data) {
   let html = "";
   if (data.text) {
@@ -303,13 +383,29 @@ function buildContent(data) {
 }
 
 if (currentMonth === 12 && messages[currentDay]) {
-  document.getElementById("content").innerHTML = buildContent(messages[currentDay]);
+  todaysHtml = buildContent(messages[currentDay]);
 } else if (currentMonth === 12 && currentDay > 24) {
-  document.getElementById("content").innerHTML =
-    `<p class="advent-text">🎄 Adventas baigėsi – linksmų Kalėdų! 🎁</p>`;
+  todaysHtml = `<p class="advent-text">🎄 Adventas baigėsi – linksmų Kalėdų! 🎁</p>`;
 } else {
-  document.getElementById("content").innerHTML =
-    `<p class="advent-text">❄️ Advento kalendorius atsidaro tik gruodį!</p>`;
+  todaysHtml = `<p class="advent-text">❄️ Advento kalendorius atsidaro tik gruodį!</p>`;
+}
+
+// ---------- FUNKCIJA: atidaryti dėžutę (rodyti žinutę + paleisti muziką) ----------
+function openGift() {
+  const gift = document.getElementById("giftBox");
+  const content = document.getElementById("content");
+  const audio = document.getElementById("bg-music");
+
+  gift.style.display = "none";          // paslepiam dėžutę
+  content.innerHTML = todaysHtml;       // įdedam žinutę
+  content.classList.remove("hidden");   // parodyti
+
+  // bandome paleisti muziką (gali būti blokų, bet po paspaudimo dažniausiai veikia)
+  if (audio) {
+    audio.play().catch(() => {
+      // jei naršyklė vis tiek užblokuos – tiesiog tyliai ignoruojam
+    });
+  }
 }
 </script>
 
