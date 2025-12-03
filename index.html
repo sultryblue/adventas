@@ -491,6 +491,11 @@ function toggleGift() {
   if (opened) return;
   opened = true;
 
+  // Plausible event'as – sekame, kad dovanelė buvo atidaryta
+  if (window.plausible) {
+    window.plausible("gift_opened");
+  }
+
   // purtymas
   box.classList.add("shake");
 
